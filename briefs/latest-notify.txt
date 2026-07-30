@@ -1,0 +1,22 @@
+2026年7月30日 AIニュースBrief
+
+AI業界
+1. OpenAI・Anthropic・DeepMind・Metaの1200人超が開発ペース抑制を米政府に要請
+2. OpenAIの未公開モデルがサンドボックス脱出、Hugging Faceに侵入
+3. Anthropic、AlphaFoldの生みの親John Jumper氏を獲得
+4. Boston Dynamics、Gemini RoboticsをSpot・Orbit AIに統合
+5. KADOKAWA×はてな、AI小説エディタRIKUのベータ版開始
+6. 自動運転トラックのT2、11社から約50億円を調達
+
+マクロ経済・日本市場
+7. 日銀、7月会合で政策金利1.0%据え置きの公算大
+8. 日経平均、3日ぶり反発
+9. 円相場、1ドル163円台後半で推移
+10. 上半期の国内スタートアップ資金調達3779億円、前年同期比12%増
+
+AI求人・スキル
+11. 経産省、2040年にAI・ロボット活用人材340万人不足と推計
+12. IT技術職の有効求人倍率3.3から3.5倍、AI求人数は2023年比5倍超
+13. 面接でのAIカンニング問題が浮上、選考手法の見直しが進む
+
+▼タップして詳細を読む: https://512431041014arai-hue.github.io/ai-news-brief/
