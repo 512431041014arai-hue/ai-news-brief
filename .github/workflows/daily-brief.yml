@@ -64,12 +64,14 @@ jobs:
             --model claude-sonnet-5
 
       - name: 生成物をコミット
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git commit -m "AI News Brief $(TZ=Asia/Tokyo date +%Y-%m-%d)" || echo "変更なし"
-          git push origin HEAD:main
+          git push "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" HEAD:main
 
       - name: Telegramで通知
         if: always()
@@ -77,8 +79,5 @@ jobs:
           TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          if [ -f briefs/latest-notify.txt ]; then
-            curl -s -X POST "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
-              --data-urlencode "chat_id=${TG_CHAT}" \
-              --data-urlencode "text@briefs/latest-notify.txt" \
-              -d "disable_web_page_preview=tru
+          test -f briefs/latest-notify.txt || exit 0
+          curl -s "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" --data-urlencode "chat_id=${TG_CHAT}" --data-urlencode "text@briefs/latest-notify.txt" -d "disable_web_page_preview=true"
