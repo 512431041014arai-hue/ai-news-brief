@@ -2,13 +2,13 @@ name: AI News Brief
 
 on:
   schedule:
-    - cron: "0 23 * * *"   # 08:00 JST（UTC+9）。GitHub側の負荷で数分遅れる場合あり
-  workflow_dispatch: {}     # 手動実行ボタン（テスト用）
+    - cron: "0 23 * * *"
+  workflow_dispatch: {}
 
 permissions:
-  contents: write           # briefファイルをコミットするため
+  contents: write
   id-token: write
-  
+
 jobs:
   brief:
     runs-on: ubuntu-latest
@@ -21,7 +21,7 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
-            あなたはaraiさん専属のニュースアナリストです。araiさんは育休中にAI業界への転職を準備しており、毎朝マクロ経済とAI業界動向を手軽にキャッチアップしたいと考えています。以下を実行してください。
+            あなたはaraiさん専属のニュースアナリストです。araiさんはAI業界への転職・キャリアアップを目指しており、毎朝マクロ経済とAI業界動向を手軽にキャッチアップしたいと考えています。以下を実行してください。
 
             # 手順
             1. リポジトリ直下の `preferences.md` を読み、お気に入りテーマ・信頼ソース・除外テーマを把握する。読めない場合は「AI業界動向・日本のAI企業・マクロ経済・AI求人トレンド」を優先テーマとする。
@@ -30,7 +30,8 @@ jobs:
                - AI業界動向（主要AI企業、モデルリリース、資金調達、M&A、日本のAIスタートアップ）
                - マクロ経済（日銀・金利・為替・株価・雇用統計など）
                - AI関連の求人・スキル・注目職種・採用トレンド
-               信頼性が低い/裏取りできない情報は載せない。
+               信頼性が低い/裏取りできない情報は載せない。各ニュースは背景まで理解できるよう十分に調べる。
+
             4. 10〜15本の見出しを選び、`briefs/<YYYY-MM-DD>.md` を新規作成する。冒頭に必ず次のfrontmatterを付ける：
                ---
                created: <YYYY-MM-DD> 08:00
@@ -40,20 +41,33 @@ jobs:
                 - AIニュースBrief/デイリー
                ---
                本文は【AI業界】【マクロ経済・日本市場】【AI求人・スキル】の3セクションに分け、各見出しは「番号. <見出し> — <1〜2文の要約>（出典・リンク）」形式。転職準備の視点で特に重要なものには「★注目」を付ける。
-            5. `briefs/latest-notify.txt` を新規作成（上書き）する。これはTelegram通知用の**プレーンテキスト**で、3500文字以内に収める。内容は「日付＋各見出しの番号・タイトル・ごく短い一言（要約は1行）」。末尾に「詳細はGitHubのbriefsフォルダを参照」と1行入れる。Markdown記法や絵文字は使わない。
-            6. 生成物はワークスペースに書き込むだけでよい（gitコミットは後続ステップが行う）。
+
+            5. `docs/index.html` を生成（上書き）する。これはスマホで見る「詳細ページ」。要件：
+               - `<!DOCTYPE html>` から始まる自己完結したHTML。外部依存なし（CSSは<style>に内蔵、JavaScriptは使わない）。
+               - `<meta name="viewport" content="width=device-width, initial-scale=1">` を入れモバイル最適化。本文は最大幅640px・中央寄せ、行間ゆったり、日本語が読みやすいフォント指定。ライト/ダーク両対応（prefers-color-scheme）。
+               - ページ上部に「AIニュースBrief」タイトルと日付。
+               - 【AI業界】【マクロ経済・日本市場】【AI求人・スキル】をセクション見出し（<h2>）で区切る。
+               - 各ニュースは `<details>` 要素で作る。`<summary>` に「番号. ★（注目時）見出し」を入れ、タップで開くと中に次を表示：2〜4文の詳しい解説（背景・論点）／「転職視点」の一言（1〜2文）／出典リンク（<a href="..." target="_blank" rel="noopener">出典</a>）。
+               - summaryは押しやすいよう余白と区切り線を付け、カード風に。見た目は清潔に。
+
+            6. `briefs/latest-notify.txt` を生成（上書き）する。Telegram通知用のプレーンテキスト、3500文字以内。内容：1行目に日付、続けて各見出しを「番号. 見出し（ごく短い一言）」で列挙。最終行に必ず次を入れる：
+               ▼タップして詳細を読む: https://512431041014arai-hue.github.io/ai-news-brief/
+               Markdown記法や絵文字は使わない。
+
+            7. 生成物（briefs/ と docs/）はワークスペースに書き込むだけでよい（gitコミットは後続ステップが行う）。
 
             簡潔かつ丁寧な日本語で。araiさんの好みは「余計な説明を省き、要点を的確に」。
+
           claude_args: |
             --allowedTools WebSearch,WebFetch,Read,Write,Edit,Bash
-            --max-turns 40
+            --max-turns 50
             --model claude-sonnet-5
 
-      - name: briefをコミット
+      - name: 生成物をコミット
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add briefs/ preferences.md 2>/dev/null || true
+          git add briefs/ docs/ preferences.md 2>/dev/null || true
           git commit -m "AI News Brief $(TZ=Asia/Tokyo date +%Y-%m-%d)" || echo "変更なし"
           git push || echo "pushスキップ"
 
@@ -72,4 +86,3 @@ jobs:
           else
             echo "通知ファイルが見つかりませんでした"
           fi
-          
