@@ -1,0 +1,74 @@
+name: AI News Brief
+
+on:
+  schedule:
+    - cron: "0 23 * * *"   # 08:00 JST（UTC+9）。GitHub側の負荷で数分遅れる場合あり
+  workflow_dispatch: {}     # 手動実行ボタン（テスト用）
+
+permissions:
+  contents: write           # briefファイルをコミットするため
+
+jobs:
+  brief:
+    runs-on: ubuntu-latest
+    steps:
+      - name: リポジトリを取得
+        uses: actions/checkout@v4
+
+      - name: Claudeでニュースブリーフを生成
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            あなたはaraiさん専属のニュースアナリストです。araiさんは育休中にAI業界への転職を準備しており、毎朝マクロ経済とAI業界動向を手軽にキャッチアップしたいと考えています。以下を実行してください。
+
+            # 手順
+            1. リポジトリ直下の `preferences.md` を読み、お気に入りテーマ・信頼ソース・除外テーマを把握する。読めない場合は「AI業界動向・日本のAI企業・マクロ経済・AI求人トレンド」を優先テーマとする。
+            2. 日付は日本時間で扱う。`TZ=Asia/Tokyo date +%Y-%m-%d` を実行して今日の日付（YYYY-MM-DD）を取得する。
+            3. WebSearchで直近およそ24時間の以下のニュースを集める（preferences.mdの優先度・信頼ソースに従う。日本市場中心＋重要なグローバルは補足）：
+               - AI業界動向（主要AI企業、モデルリリース、資金調達、M&A、日本のAIスタートアップ）
+               - マクロ経済（日銀・金利・為替・株価・雇用統計など）
+               - AI関連の求人・スキル・注目職種・採用トレンド
+               信頼性が低い/裏取りできない情報は載せない。
+            4. 10〜15本の見出しを選び、`briefs/<YYYY-MM-DD>.md` を新規作成する。冒頭に必ず次のfrontmatterを付ける：
+               ---
+               created: <YYYY-MM-DD> 08:00
+               category: 29_AI業界ニュース
+               tags:
+                - 5_リファレンス/AI業界ニュース
+                - AIニュースBrief/デイリー
+               ---
+               本文は【AI業界】【マクロ経済・日本市場】【AI求人・スキル】の3セクションに分け、各見出しは「番号. <見出し> — <1〜2文の要約>（出典・リンク）」形式。転職準備の視点で特に重要なものには「★注目」を付ける。
+            5. `briefs/latest-notify.txt` を新規作成（上書き）する。これはTelegram通知用の**プレーンテキスト**で、3500文字以内に収める。内容は「日付＋各見出しの番号・タイトル・ごく短い一言（要約は1行）」。末尾に「詳細はGitHubのbriefsフォルダを参照」と1行入れる。Markdown記法や絵文字は使わない。
+            6. 生成物はワークスペースに書き込むだけでよい（gitコミットは後続ステップが行う）。
+
+            簡潔かつ丁寧な日本語で。araiさんの好みは「余計な説明を省き、要点を的確に」。
+          claude_args: |
+            --allowedTools WebSearch,WebFetch,Read,Write,Edit,Bash
+            --max-turns 40
+            --model claude-sonnet-5
+
+      - name: briefをコミット
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add briefs/ preferences.md 2>/dev/null || true
+          git commit -m "AI News Brief $(TZ=Asia/Tokyo date +%Y-%m-%d)" || echo "変更なし"
+          git push || echo "pushスキップ"
+
+      - name: Telegramで通知
+        if: always()
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ -f briefs/latest-notify.txt ]; then
+            curl -s -X POST "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
+              --data-urlencode "chat_id=${TG_CHAT}" \
+              --data-urlencode "text@briefs/latest-notify.txt" \
+              -d "disable_web_page_preview=true" > /dev/null
+            echo "Telegram通知を送信しました"
+          else
+            echo "通知ファイルが見つかりませんでした"
+          fi
+          
