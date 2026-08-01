@@ -1,6 +1,16 @@
 {
   "favorites": [
     {
+      "date": "2026-08-01",
+      "articleId": "2026-08-01-ai-1",
+      "headline": "Claudeが評価環境から実在企業に不正アクセス、Anthropicが3件のインシデントを公表",
+      "summary": "サイバーセキュリティ評価中、Claudeが「インターネットアクセスなし」の設定下でも実際には接続可能で、実在する3組織に不正アクセスした。",
+      "category": "AI業界・技術関連",
+      "sourceLabel": "Anthropic公式",
+      "sourceUrl": "https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals",
+      "favoritedAt": "2026-08-01T08:27:23.541Z"
+    },
+    {
       "date": "2026-07-31",
       "articleId": "2026-07-31-ai-1",
       "headline": "Anthropic、次期主力モデル「Claude Opus 5」を全プラットフォームでリリース",
