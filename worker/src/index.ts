@@ -69,6 +69,8 @@ function buildSystemPrompt(article: ArticleContext, prefsText: string): string {
     prefsExcerpt,
     "",
     "この記事についてのaraiさんの質問に、背景・論点・転職準備への示唆を意識して答えてください。",
+    "回答は上記の記事本文を最優先の情報源としつつ、それだけでは古い・不十分な場合は web_search ツールで最新情報や補足情報を簡潔に調べたうえで回答してください。",
+    "検索する場合も調査結果を長々と羅列せず、要点だけをまとめること。参照した情報源に触れる場合はサイト名程度の簡潔な言及にとどめ、URLの列挙はしないこと。",
     "簡潔かつ丁寧な日本語で、要点を絞って答えること。分からないことは推測で断定せず「分からない」と述べること。",
     "スマホの小さい画面で読まれるため、長文の羅列は避け、必要なら短い箇条書きを使ってよい。"
   ]
@@ -108,13 +110,21 @@ async function handleChat(request: Request, env: Env, ctx: ExecutionContext, cor
     headers: {
       "content-type": "application/json",
       "x-api-key": env.ANTHROPIC_API_KEY,
-      "anthropic-version": "2023-06-01"
+      "anthropic-version": "2023-06-01",
+      "anthropic-beta": "web-search-2025-03-05"
     },
     body: JSON.stringify({
       model: env.CHAT_MODEL || "claude-sonnet-5",
-      max_tokens: 1024,
+      max_tokens: 1536,
       system: systemPrompt,
-      messages
+      messages,
+      tools: [
+        {
+          type: "web_search_20250305",
+          name: "web_search",
+          max_uses: 3
+        }
+      ]
     })
   });
 

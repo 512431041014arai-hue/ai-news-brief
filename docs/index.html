@@ -185,7 +185,10 @@
   /* overlay / bottom sheet */
   .overlay {
     position: fixed;
-    inset: 0;
+    left: 0;
+    right: 0;
+    top: var(--vv-top, 0px);
+    height: var(--vv-height, 100vh);
     background: rgba(0,0,0,0.4);
     display: flex;
     align-items: flex-end;
@@ -198,7 +201,7 @@
     max-width: 640px;
     margin: 0 auto;
     border-radius: 16px 16px 0 0;
-    max-height: 88vh;
+    max-height: calc(var(--vv-height, 100vh) * 0.88);
     display: flex;
     flex-direction: column;
     padding-bottom: env(safe-area-inset-bottom);
@@ -394,6 +397,25 @@
   var prevDayBtn = document.getElementById('prevDay');
   var nextDayBtn = document.getElementById('nextDay');
 
+  // iOSのソフトウェアキーボード表示時、position:fixedの要素がキーボードの下に
+  // 隠れて入力欄が届かなくなる問題への対策。visualViewportの高さ・オフセットを
+  // CSSカスタムプロパティに反映し、オーバーレイの高さをそれに追従させる。
+  function syncViewportVars() {
+    var vv = window.visualViewport;
+    var height = vv ? vv.height : window.innerHeight;
+    var top = vv ? vv.offsetTop : 0;
+    document.documentElement.style.setProperty('--vv-height', height + 'px');
+    document.documentElement.style.setProperty('--vv-top', top + 'px');
+  }
+  syncViewportVars();
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', syncViewportVars);
+    window.visualViewport.addEventListener('scroll', syncViewportVars);
+  }
+  window.addEventListener('orientationchange', function () {
+    setTimeout(syncViewportVars, 250);
+  });
+
   function escapeHtml(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
@@ -550,6 +572,14 @@
 
   document.getElementById('chatClose').addEventListener('click', closeChat);
   chatOverlay.addEventListener('click', function (e) { if (e.target === chatOverlay) closeChat(); });
+
+  // キーボード表示アニメーション後にビューポート変数と最下部スクロールを再計算する
+  chatInput.addEventListener('focus', function () {
+    setTimeout(function () {
+      syncViewportVars();
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }, 300);
+  });
 
   function openChat(article) {
     state.chat = { articleId: article.id, article: article, history: [] };
