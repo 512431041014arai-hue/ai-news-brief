@@ -23,6 +23,7 @@
     --accent: #2260d6;
     --accent-fg: #ffffff;
     --star: #d97706;
+    --heart: #c1394a;
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -34,6 +35,7 @@
       --accent: #7aa7ff;
       --accent-fg: #0b1220;
       --star: #f5a524;
+      --heart: #ff8a9a;
     }
   }
   * { box-sizing: border-box; }
@@ -76,6 +78,17 @@
     cursor: pointer;
     padding: 6px;
   }
+  #favoritesBtn {
+    position: absolute;
+    left: 0;
+    top: -4px;
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    color: var(--sub);
+    cursor: pointer;
+    padding: 6px;
+  }
   .datebar {
     display: flex;
     align-items: center;
@@ -106,7 +119,7 @@
     padding-bottom: 8px;
     border-bottom: 2px solid var(--border);
   }
-  details.card {
+  .card {
     background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: 12px;
@@ -136,6 +149,20 @@
     border-bottom: 1px solid var(--border);
   }
   .star { color: var(--star); }
+  .fav-btn {
+    background: none;
+    border: none;
+    font-size: 1.15rem;
+    line-height: 1;
+    padding: 0 2px 0 0;
+    cursor: pointer;
+    color: var(--heart);
+    flex-shrink: 0;
+  }
+  .fav-card { padding: 14px 16px; }
+  .fav-meta { font-size: 0.78rem; color: var(--sub); margin-bottom: 4px; }
+  .fav-headline { font-weight: 600; margin-bottom: 6px; }
+  .fav-summary { font-size: 0.9rem; margin: 0 0 8px; }
   .body { padding: 14px 16px 16px; font-size: 0.95rem; }
   .body p { margin: 0 0 10px; }
   .actions-row {
@@ -242,11 +269,12 @@
 </head>
 <body>
 <header class="top">
-  <button id="settingsBtn" aria-label="設定">⚙️</button>
+  <button id="favoritesBtn" aria-label="お気に入り一覧">★</button>
   <h1>AIニュースBrief</h1>
+  <button id="settingsBtn" aria-label="設定">⚙️</button>
 </header>
 
-<div class="datebar">
+<div class="datebar" id="datebar">
   <button id="prevDay" aria-label="前の日">◀</button>
   <select id="dateSelect"></select>
   <button id="nextDay" aria-label="次の日">▶</button>
@@ -284,10 +312,14 @@
 (function () {
   "use strict";
 
+  var WORKER_BASE = 'https://ai-news-brief-chat.ainewsbrief.workers.dev';
+
   var state = {
     dates: [],
     currentDate: null,
-    data: null
+    data: null,
+    favorites: {},
+    view: 'daily'
   };
 
   var contentEl = document.getElementById('content');
@@ -394,8 +426,56 @@
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(prompt).catch(function () {});
     }
-    var url = 'https://claude.ai/new?q=' + encodeURIComponent(prompt);
-    openPreferChrome(url);
+    var claudeUrl = 'https://claude.ai/new?q=' + encodeURIComponent(prompt);
+    // claude.aiへ直接遷移するとiOSのUniversal LinksでClaudeアプリに
+    // 自動的に持っていかれることがあるため、一度自ドメイン(Worker)を
+    // 経由してから302でclaude.aiへリダイレクトする。
+    var bounceUrl = WORKER_BASE + '/goto?u=' + encodeURIComponent(claudeUrl);
+    openPreferChrome(bounceUrl);
+  }
+
+  // ---------- お気に入り ----------
+  function loadFavoritesIndex() {
+    return fetch('data/favorites.json', { cache: 'no-store' })
+      .then(function (res) { if (!res.ok) throw new Error('status ' + res.status); return res.json(); })
+      .then(function (data) {
+        var map = {};
+        (data.favorites || []).forEach(function (it) { map[it.articleId] = it; });
+        state.favorites = map;
+      })
+      .catch(function () { state.favorites = {}; });
+  }
+
+  function toggleFavorite(article, category, date, btnEl) {
+    var willAdd = !state.favorites[article.id];
+    var record = {
+      date: date || state.currentDate,
+      articleId: article.id,
+      headline: article.headline,
+      summary: article.summary,
+      category: category,
+      sourceLabel: article.sourceLabel,
+      sourceUrl: article.sourceUrl,
+      favoritedAt: new Date().toISOString()
+    };
+    if (willAdd) state.favorites[article.id] = record;
+    else delete state.favorites[article.id];
+    if (btnEl) btnEl.textContent = willAdd ? '♥' : '♡';
+
+    fetch(WORKER_BASE + '/api/favorite', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: willAdd ? 'add' : 'remove',
+        date: record.date,
+        articleId: record.articleId,
+        headline: record.headline,
+        summary: record.summary,
+        category: record.category,
+        sourceLabel: record.sourceLabel,
+        sourceUrl: record.sourceUrl
+      })
+    }).catch(function (e) { console.warn('favorite sync failed', e); });
   }
 
   // ---------- Obsidianに保存 ----------
@@ -438,14 +518,22 @@
   }
 
   // ---------- rendering ----------
-  function renderArticle(a) {
+  function renderArticle(a, category) {
     var det = document.createElement('details');
     det.className = 'card';
     det.id = 'article-' + a.id;
 
+    var isFav = !!state.favorites[a.id];
     var sum = document.createElement('summary');
-    sum.innerHTML = (a.star ? '<span class="star">★</span>' : '') + escapeHtml(a.headline);
+    sum.innerHTML = '<button type="button" class="fav-btn" aria-label="お気に入り">' + (isFav ? '♥' : '♡') + '</button>' +
+      (a.star ? '<span class="star">★</span>' : '') + escapeHtml(a.headline);
     det.appendChild(sum);
+
+    sum.querySelector('.fav-btn').addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleFavorite(a, category, state.currentDate, e.currentTarget);
+    });
 
     var body = document.createElement('div');
     body.className = 'body';
@@ -483,8 +571,72 @@
       h2.textContent = section.title;
       contentEl.appendChild(h2);
       (section.articles || []).forEach(function (a) {
-        contentEl.appendChild(renderArticle(a));
+        contentEl.appendChild(renderArticle(a, section.title));
       });
+    });
+  }
+
+  // ---------- お気に入り一覧ビュー ----------
+  function renderFavoritesView() {
+    contentEl.innerHTML = '<div class="empty-state">読み込み中…</div>';
+    fetch('data/favorites.json', { cache: 'no-store' })
+      .then(function (res) {
+        if (!res.ok) throw new Error('status ' + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        var items = Array.isArray(data.favorites) ? data.favorites : [];
+        var cutoff = Date.now() - 30 * 24 * 60 * 60 * 1000;
+        items = items.filter(function (it) {
+          var t = Date.parse(it.favoritedAt || it.date);
+          return isNaN(t) ? true : t >= cutoff;
+        });
+        renderFavoritesList(items);
+      })
+      .catch(function (err) {
+        contentEl.innerHTML = '<div class="empty-state">お気に入りを読み込めませんでした。<br>(' + escapeHtml(err.message) + ')</div>';
+      });
+  }
+
+  function renderFavoritesList(items) {
+    contentEl.innerHTML = '';
+    var h2 = document.createElement('h2');
+    h2.textContent = '★ お気に入り（直近30日）';
+    contentEl.appendChild(h2);
+
+    if (!items.length) {
+      var empty = document.createElement('div');
+      empty.className = 'empty-state';
+      empty.textContent = 'お気に入りはまだありません。記事の♡をタップして追加できます。';
+      contentEl.appendChild(empty);
+      return;
+    }
+
+    items.forEach(function (it) {
+      var card = document.createElement('div');
+      card.className = 'card fav-card';
+      var html = '<div class="fav-meta">' + escapeHtml(formatDateJp(it.date)) + (it.category ? ' ・ ' + escapeHtml(it.category) : '') + '</div>';
+      html += '<div class="fav-headline">' + escapeHtml(it.headline || '') + '</div>';
+      if (it.summary) html += '<p class="fav-summary">' + escapeHtml(it.summary) + '</p>';
+      html += '<div class="actions-row">';
+      if (it.sourceUrl) {
+        html += '<a class="source-link" href="' + escapeHtml(it.sourceUrl) + '" target="_blank" rel="noopener">出典: ' + escapeHtml(it.sourceLabel || 'リンク') + '</a>';
+      } else {
+        html += '<span class="source-link"></span>';
+      }
+      html += '<button type="button" class="action-btn secondary" data-remove="1">♥ 解除</button>';
+      html += '</div>';
+      card.innerHTML = html;
+      card.querySelector('[data-remove]').addEventListener('click', function () {
+        toggleFavorite(
+          { id: it.articleId, headline: it.headline, summary: it.summary, sourceLabel: it.sourceLabel, sourceUrl: it.sourceUrl },
+          it.category,
+          it.date,
+          null
+        );
+        card.remove();
+      });
+      contentEl.appendChild(card);
     });
   }
 
@@ -508,6 +660,8 @@
   }
 
   function loadDate(date) {
+    state.view = 'daily';
+    document.getElementById('datebar').style.display = 'flex';
     state.currentDate = date;
     contentEl.innerHTML = '<div class="empty-state">読み込み中…</div>';
     updateNavButtons();
@@ -535,21 +689,32 @@
   });
   dateSelect.addEventListener('change', function () { loadDate(dateSelect.value); });
 
+  document.getElementById('favoritesBtn').addEventListener('click', function () {
+    if (state.view === 'favorites') {
+      loadDate(state.currentDate);
+    } else {
+      state.view = 'favorites';
+      document.getElementById('datebar').style.display = 'none';
+      renderFavoritesView();
+    }
+  });
+
   // ---------- boot ----------
-  fetch('data/index.json', { cache: 'no-store' })
-    .then(function (res) {
-      if (!res.ok) throw new Error('status ' + res.status);
-      return res.json();
-    })
-    .then(function (idx) {
-      state.dates = idx.dates || [];
-      if (!state.dates.length) throw new Error('no dates');
-      populateDateSelect();
-      loadDate(state.dates[0]);
-    })
-    .catch(function (err) {
-      contentEl.innerHTML = '<div class="empty-state">ニュースデータを読み込めませんでした。<br>(' + escapeHtml(err.message) + ')</div>';
-    });
+  loadFavoritesIndex().then(function () {
+    return fetch('data/index.json', { cache: 'no-store' })
+      .then(function (res) {
+        if (!res.ok) throw new Error('status ' + res.status);
+        return res.json();
+      })
+      .then(function (idx) {
+        state.dates = idx.dates || [];
+        if (!state.dates.length) throw new Error('no dates');
+        populateDateSelect();
+        loadDate(state.dates[0]);
+      });
+  }).catch(function (err) {
+    contentEl.innerHTML = '<div class="empty-state">ニュースデータを読み込めませんでした。<br>(' + escapeHtml(err.message) + ')</div>';
+  });
 })();
 </script>
 </body>

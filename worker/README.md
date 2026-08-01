@@ -1,11 +1,11 @@
-# ai-news-brief-chat (Cloudflare Worker) — 現在は未使用
+# ai-news-brief-chat (Cloudflare Worker)
 
-`docs/index.html` はサイト内チャットをやめ、「AIに聞いてみる」ボタンでChromeのclaude.aiを開く方式に変更したため、このWorkerは現在どこからも呼び出されていない。参考実装としてリポジトリに残してある。
+`docs/index.html` の「お気に入り」永続化と、「AIに聞いてみる」のリダイレクト中継を担うバックエンド。Anthropic APIは使わないため、呼び出してもAI利用料は発生しない。
 
-- `POST /api/chat` — （旧）記事の文脈とpreferences.mdを踏まえてAnthropic APIに問い合わせ、リアルタイムに回答を返す。
-- `POST /api/save-chat` — （旧）チャット履歴をこのリポジトリの `chats/<date>/<articleId>.md` にコミットする。
+- `POST /api/favorite` — お気に入りの追加/削除を `docs/data/favorites.json` にコミットする（`GITHUB_TOKEN` を使用）。
+- `GET /goto?u=<claude.aiのURL>` — claude.aiへの直接遷移がiOSのUniversal LinksでClaudeアプリに奪われるのを避けるための302リダイレクト中継。
 
-詳しい経緯・削除する場合の手順はリポジトリ直下の [`SETUP.md`](../SETUP.md) を参照。
+必要なシークレットは `GITHUB_TOKEN` のみ（`ANTHROPIC_API_KEY` はチャット機能廃止に伴い不要）。詳しくはリポジトリ直下の [`SETUP.md`](../SETUP.md) を参照。
 
 ## ローカル開発
 

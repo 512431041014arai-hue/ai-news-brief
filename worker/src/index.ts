@@ -1,30 +1,27 @@
 export interface Env {
-  ANTHROPIC_API_KEY: string;
   GITHUB_TOKEN: string;
   GITHUB_REPO: string;
   GITHUB_BRANCH: string;
   ALLOWED_ORIGIN: string;
-  CHAT_MODEL: string;
 }
 
-interface ChatMessage {
-  role: "user" | "assistant";
-  content: string;
-  pending?: boolean;
-}
-
-interface ArticleContext {
+interface FavoriteItem {
+  date: string;
+  articleId: string;
   headline?: string;
   summary?: string;
-  detail?: string;
+  category?: string;
   sourceLabel?: string;
   sourceUrl?: string;
+  favoritedAt: string;
 }
+
+const FAVORITES_PATH = "docs/data/favorites.json";
 
 function corsHeaders(env: Env): Record<string, string> {
   return {
     "Access-Control-Allow-Origin": env.ALLOWED_ORIGIN || "*",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Max-Age": "86400",
     Vary: "Origin"
@@ -36,109 +33,6 @@ function json(obj: unknown, status: number, cors: Record<string, string>): Respo
     status,
     headers: { "content-type": "application/json; charset=utf-8", ...cors }
   });
-}
-
-async function getPreferencesText(env: Env, ctx: ExecutionContext): Promise<string> {
-  const cache = (caches as any).default;
-  const cacheKey = new Request("https://ai-news-brief-chat.internal/preferences-cache");
-  const cached = await cache.match(cacheKey);
-  if (cached) return await cached.text();
-
-  const url = `https://raw.githubusercontent.com/${env.GITHUB_REPO}/${env.GITHUB_BRANCH}/preferences.md`;
-  const res = await fetch(url, { cf: { cacheTtl: 600 } as any });
-  const text = res.ok ? await res.text() : "";
-
-  const cacheResponse = new Response(text, {
-    headers: { "Cache-Control": "max-age=600" }
-  });
-  ctx.waitUntil(cache.put(cacheKey, cacheResponse));
-  return text;
-}
-
-function buildSystemPrompt(article: ArticleContext, prefsText: string): string {
-  const prefsExcerpt = (prefsText || "").slice(0, 4000);
-  return [
-    "あなたはaraiさん専属のニュース解説アシスタントです。araiさんは育休中にAI業界への転職を準備しており、毎朝ニュースをキャッチアップしています。",
-    "いま表示している記事はこちらです。",
-    `見出し: ${article?.headline || "(不明)"}`,
-    article?.summary ? `要約: ${article.summary}` : "",
-    article?.detail ? `詳細: ${article.detail}` : "",
-    article?.sourceUrl ? `出典URL: ${article.sourceUrl}` : "",
-    "",
-    "araiさんの関心・転職準備の背景（preferences.mdより抜粋。無ければ無視してよい）:",
-    prefsExcerpt,
-    "",
-    "この記事についてのaraiさんの質問に、背景・論点・転職準備への示唆を意識して答えてください。",
-    "回答は上記の記事本文を最優先の情報源としつつ、それだけでは古い・不十分な場合は web_search ツールで最新情報や補足情報を簡潔に調べたうえで回答してください。",
-    "検索する場合も調査結果を長々と羅列せず、要点だけをまとめること。参照した情報源に触れる場合はサイト名程度の簡潔な言及にとどめ、URLの列挙はしないこと。",
-    "簡潔かつ丁寧な日本語で、要点を絞って答えること。分からないことは推測で断定せず「分からない」と述べること。",
-    "スマホの小さい画面で読まれるため、長文の羅列は避け、必要なら短い箇条書きを使ってよい。"
-  ]
-    .filter(Boolean)
-    .join("\n");
-}
-
-async function handleChat(request: Request, env: Env, ctx: ExecutionContext, cors: Record<string, string>): Promise<Response> {
-  let body: any;
-  try {
-    body = await request.json();
-  } catch {
-    return json({ error: "invalid json" }, 400, cors);
-  }
-
-  const message: string = body?.message;
-  const article: ArticleContext = body?.article || {};
-  const history: ChatMessage[] = Array.isArray(body?.history) ? body.history : [];
-
-  if (!message || typeof message !== "string") {
-    return json({ error: "message is required" }, 400, cors);
-  }
-  if (!env.ANTHROPIC_API_KEY) {
-    return json({ error: "ANTHROPIC_API_KEY is not configured on the worker" }, 500, cors);
-  }
-
-  const prefsText = await getPreferencesText(env, ctx);
-  const systemPrompt = buildSystemPrompt(article, prefsText);
-
-  const messages = history
-    .filter((m) => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string" && !m.pending)
-    .map((m) => ({ role: m.role, content: m.content }));
-  messages.push({ role: "user", content: message });
-
-  const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      "x-api-key": env.ANTHROPIC_API_KEY,
-      "anthropic-version": "2023-06-01",
-      "anthropic-beta": "web-search-2025-03-05"
-    },
-    body: JSON.stringify({
-      model: env.CHAT_MODEL || "claude-sonnet-5",
-      max_tokens: 1536,
-      system: systemPrompt,
-      messages,
-      tools: [
-        {
-          type: "web_search_20250305",
-          name: "web_search",
-          max_uses: 3
-        }
-      ]
-    })
-  });
-
-  if (!anthropicRes.ok) {
-    const detail = await anthropicRes.text();
-    return json({ error: "anthropic api error", detail }, 502, cors);
-  }
-
-  const data: any = await anthropicRes.json();
-  const reply = Array.isArray(data.content)
-    ? data.content.map((block: any) => block.text || "").join("").trim()
-    : "";
-
-  return json({ reply }, 200, cors);
 }
 
 function githubHeaders(env: Env): Record<string, string> {
@@ -162,11 +56,43 @@ function base64EncodeUtf8(str: string): string {
   return btoa(binary);
 }
 
-function sanitizeId(id: string): string {
-  return String(id).replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 80) || "chat";
+function base64DecodeUtf8(b64: string): string {
+  const binary = atob(b64.replace(/\n/g, ""));
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
 }
 
-async function handleSaveChat(request: Request, env: Env, cors: Record<string, string>): Promise<Response> {
+async function readFavorites(env: Env): Promise<{ items: FavoriteItem[]; sha?: string }> {
+  const apiUrl = `https://api.github.com/repos/${env.GITHUB_REPO}/contents/${FAVORITES_PATH}?ref=${encodeURIComponent(env.GITHUB_BRANCH)}`;
+  const res = await fetch(apiUrl, { headers: githubHeaders(env) });
+  if (!res.ok) return { items: [] };
+  const meta: any = await res.json();
+  try {
+    const text = base64DecodeUtf8(meta.content || "");
+    const data = JSON.parse(text);
+    return { items: Array.isArray(data.favorites) ? data.favorites : [], sha: meta.sha };
+  } catch {
+    return { items: [], sha: meta.sha };
+  }
+}
+
+async function writeFavorites(env: Env, items: FavoriteItem[], sha: string | undefined): Promise<Response> {
+  const apiUrl = `https://api.github.com/repos/${env.GITHUB_REPO}/contents/${FAVORITES_PATH}`;
+  const content = JSON.stringify({ favorites: items }, null, 2) + "\n";
+  return fetch(apiUrl, {
+    method: "PUT",
+    headers: githubHeaders(env),
+    body: JSON.stringify({
+      message: "update favorites",
+      content: base64EncodeUtf8(content),
+      branch: env.GITHUB_BRANCH,
+      sha
+    })
+  });
+}
+
+async function handleFavorite(request: Request, env: Env, cors: Record<string, string>): Promise<Response> {
   let body: any;
   try {
     body = await request.json();
@@ -174,76 +100,52 @@ async function handleSaveChat(request: Request, env: Env, cors: Record<string, s
     return json({ error: "invalid json" }, 400, cors);
   }
 
-  const date: string = body?.date;
+  const action: string = body?.action === "remove" ? "remove" : "add";
   const articleId: string = body?.articleId;
-  const article: ArticleContext = body?.article || {};
-  const history: ChatMessage[] = Array.isArray(body?.history) ? body.history : [];
-  const feedback: string | undefined = body?.feedback;
-
-  if (!date || !articleId || !history.length) {
-    return json({ error: "date, articleId and non-empty history are required" }, 400, cors);
+  const date: string = body?.date;
+  if (!articleId || !date) {
+    return json({ error: "date and articleId are required" }, 400, cors);
   }
   if (!env.GITHUB_TOKEN) {
     return json({ error: "GITHUB_TOKEN is not configured on the worker" }, 500, cors);
   }
 
-  const path = `chats/${date}/${sanitizeId(articleId)}.md`;
+  const { items, sha } = await readFavorites(env);
+  const next = items.filter((it) => it.articleId !== articleId);
 
-  const lines: string[] = [];
-  lines.push("---");
-  lines.push(`created: ${date}`);
-  lines.push("tags:");
-  lines.push(" - AIニュースBrief/チャットログ");
-  if (feedback) lines.push(`feedback: ${feedback}`);
-  lines.push("---");
-  lines.push("");
-  lines.push(`# ${article?.headline || articleId}`);
-  lines.push("");
-  if (article?.summary) {
-    lines.push(`> ${article.summary}`);
-    lines.push("");
-  }
-  if (article?.sourceUrl) {
-    lines.push(`出典: [${article.sourceLabel || "リンク"}](${article.sourceUrl})`);
-    lines.push("");
-  }
-  lines.push("## チャット履歴");
-  lines.push("");
-  history.forEach((m) => {
-    if (!m || m.pending || !m.content) return;
-    lines.push(`**${m.role === "user" ? "arai" : "AI"}:** ${m.content}`);
-    lines.push("");
-  });
-  const content = lines.join("\n");
-
-  const apiUrl = `https://api.github.com/repos/${env.GITHUB_REPO}/contents/${encodePath(path)}`;
-
-  let sha: string | undefined;
-  const getRes = await fetch(`${apiUrl}?ref=${encodeURIComponent(env.GITHUB_BRANCH)}`, {
-    headers: githubHeaders(env)
-  });
-  if (getRes.ok) {
-    const meta: any = await getRes.json();
-    sha = meta?.sha;
+  if (action === "add") {
+    next.unshift({
+      date,
+      articleId,
+      headline: body?.headline,
+      summary: body?.summary,
+      category: body?.category,
+      sourceLabel: body?.sourceLabel,
+      sourceUrl: body?.sourceUrl,
+      favoritedAt: new Date().toISOString()
+    });
   }
 
-  const putRes = await fetch(apiUrl, {
-    method: "PUT",
-    headers: githubHeaders(env),
-    body: JSON.stringify({
-      message: `chat log: ${path}`,
-      content: base64EncodeUtf8(content),
-      branch: env.GITHUB_BRANCH,
-      sha
-    })
-  });
-
+  const putRes = await writeFavorites(env, next, sha);
   if (!putRes.ok) {
     const detail = await putRes.text();
     return json({ error: "github commit failed", detail }, 502, cors);
   }
+  return json({ ok: true, count: next.length }, 200, cors);
+}
 
-  return json({ ok: true, path }, 200, cors);
+// Anthropic/Claudeのアプリへの自動遷移(Universal Links)をできるだけ避けるため、
+// 一度自ドメインを経由してから302でclaude.aiへリダイレクトする。
+async function handleGoto(request: Request, cors: Record<string, string>): Promise<Response> {
+  const url = new URL(request.url);
+  const target = url.searchParams.get("u");
+  if (!target || !/^https:\/\/claude\.ai\//.test(target)) {
+    return json({ error: "invalid target" }, 400, cors);
+  }
+  return new Response(null, {
+    status: 302,
+    headers: { Location: target, ...cors }
+  });
 }
 
 export default {
@@ -256,11 +158,11 @@ export default {
     }
 
     try {
-      if (url.pathname === "/api/chat" && request.method === "POST") {
-        return await handleChat(request, env, ctx, cors);
+      if (url.pathname === "/api/favorite" && request.method === "POST") {
+        return await handleFavorite(request, env, cors);
       }
-      if (url.pathname === "/api/save-chat" && request.method === "POST") {
-        return await handleSaveChat(request, env, cors);
+      if (url.pathname === "/goto" && request.method === "GET") {
+        return await handleGoto(request, cors);
       }
       return json({ error: "not found" }, 404, cors);
     } catch (err: any) {
