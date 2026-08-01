@@ -2,8 +2,8 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AIニュースBrief — 2026-07-31</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AIニュースBrief</title>
 <style>
   :root {
     color-scheme: light dark;
@@ -13,7 +13,13 @@
     --card-bg: #f6f6f8;
     --border: #e2e2e6;
     --accent: #2260d6;
+    --accent-fg: #ffffff;
     --star: #d97706;
+    --danger: #c1394a;
+    --bubble-user: #2260d6;
+    --bubble-user-fg: #ffffff;
+    --bubble-ai: #e9e9ee;
+    --bubble-ai-fg: #1c1c1e;
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -23,43 +29,86 @@
       --card-bg: #1e1e21;
       --border: #303034;
       --accent: #7aa7ff;
+      --accent-fg: #0b1220;
       --star: #f5a524;
+      --danger: #ff8a9a;
+      --bubble-user: #3a6ff0;
+      --bubble-user-fg: #ffffff;
+      --bubble-ai: #2a2a2e;
+      --bubble-ai-fg: #f0f0f2;
     }
   }
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    padding: 24px 16px 60px;
+    padding: 20px 16px 60px;
     background: var(--bg);
     color: var(--fg);
     font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", system-ui, -apple-system, sans-serif;
     line-height: 1.8;
     -webkit-text-size-adjust: 100%;
   }
-  main {
+  button { font: inherit; }
+  main, #app-header {
     max-width: 640px;
     margin: 0 auto;
   }
-  header {
-    margin-bottom: 28px;
+  header.top {
+    max-width: 640px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  header.top h1 {
+    font-size: 1.4rem;
+    margin: 0;
+    letter-spacing: 0.02em;
     text-align: center;
   }
-  header h1 {
-    font-size: 1.5rem;
-    margin: 0 0 6px;
-    letter-spacing: 0.02em;
-  }
-  header .date {
+  #settingsBtn {
+    position: absolute;
+    right: 0;
+    top: -4px;
+    background: none;
+    border: none;
+    font-size: 1.3rem;
     color: var(--sub);
+    cursor: pointer;
+    padding: 6px;
+  }
+  .datebar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .datebar button {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+  .datebar button:disabled { opacity: 0.35; cursor: default; }
+  .datebar select {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    border-radius: 8px;
+    padding: 6px 10px;
     font-size: 0.95rem;
   }
   h2 {
     font-size: 1.15rem;
-    margin: 36px 0 14px;
+    margin: 32px 0 14px;
     padding-bottom: 8px;
     border-bottom: 2px solid var(--border);
   }
-  details {
+  details.card {
     background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: 12px;
@@ -82,19 +131,15 @@
     margin-left: auto;
     color: var(--sub);
     font-weight: normal;
+    flex-shrink: 0;
   }
-  details[open] summary::after { content: "▴"; }
-  details[open] summary {
+  details[open] > summary::after { content: "▴"; }
+  details[open] > summary {
     border-bottom: 1px solid var(--border);
   }
   .star { color: var(--star); }
-  .body {
-    padding: 14px 16px 16px;
-    font-size: 0.95rem;
-  }
-  .body p {
-    margin: 0 0 10px;
-  }
+  .body { padding: 14px 16px 16px; font-size: 0.95rem; }
+  .body p { margin: 0 0 10px; }
   .career {
     background: rgba(34, 96, 214, 0.08);
     border-left: 3px solid var(--accent);
@@ -104,142 +149,574 @@
     font-size: 0.9rem;
   }
   .career b { color: var(--accent); }
-  .body a {
-    color: var(--accent);
-    text-decoration: none;
-    font-size: 0.9rem;
+  .actions-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 6px;
+    flex-wrap: wrap;
   }
-  .body a:hover { text-decoration: underline; }
-  footer {
+  .actions-row a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+  .actions-row a:hover { text-decoration: underline; }
+  .chat-btn {
+    background: var(--accent);
+    color: var(--accent-fg);
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  footer.page-footer {
+    max-width: 640px;
+    margin: 40px auto 0;
     text-align: center;
     color: var(--sub);
     font-size: 0.8rem;
-    margin-top: 40px;
   }
+  .empty-state {
+    text-align: center;
+    color: var(--sub);
+    padding: 60px 20px;
+  }
+
+  /* overlay / bottom sheet */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: flex-end;
+    z-index: 50;
+  }
+  .overlay.hidden { display: none; }
+  .sheet {
+    background: var(--bg);
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    border-radius: 16px 16px 0 0;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: env(safe-area-inset-bottom);
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.25);
+  }
+  .sheet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sheet-title { font-weight: 700; font-size: 1rem; padding-right: 12px; }
+  .sheet-header button.close {
+    background: none;
+    border: none;
+    color: var(--sub);
+    font-size: 1.2rem;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  /* chat */
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 160px;
+  }
+  .msg { max-width: 85%; padding: 10px 13px; border-radius: 14px; font-size: 0.92rem; white-space: pre-wrap; }
+  .msg.user { align-self: flex-end; background: var(--bubble-user); color: var(--bubble-user-fg); border-bottom-right-radius: 4px; }
+  .msg.assistant { align-self: flex-start; background: var(--bubble-ai); color: var(--bubble-ai-fg); border-bottom-left-radius: 4px; }
+  .msg.system-note { align-self: center; color: var(--sub); font-size: 0.8rem; background: none; padding: 4px; }
+  .msg.pending { opacity: 0.6; }
+  .chat-inputbar {
+    display: flex;
+    gap: 8px;
+    padding: 10px 16px;
+    border-top: 1px solid var(--border);
+  }
+  .chat-inputbar textarea {
+    flex: 1;
+    resize: none;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--fg);
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    min-height: 42px;
+    max-height: 120px;
+    font-family: inherit;
+  }
+  .chat-inputbar button {
+    background: var(--accent);
+    color: var(--accent-fg);
+    border: none;
+    border-radius: 10px;
+    padding: 0 18px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .chat-inputbar button:disabled { opacity: 0.5; }
+  .chat-actions {
+    display: flex;
+    gap: 8px;
+    padding: 10px 16px 14px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .chat-actions button {
+    flex: 1;
+    min-width: 130px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--fg);
+    padding: 9px 10px;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+  .chat-actions button#chatNotInterested { color: var(--danger); }
+  .chat-hint {
+    padding: 16px;
+    color: var(--sub);
+    font-size: 0.88rem;
+    text-align: center;
+  }
+
+  /* settings */
+  .settings-body { padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+  .settings-body label { display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem; color: var(--sub); }
+  .settings-body input {
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--fg);
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+  .settings-body .save-btn {
+    background: var(--accent);
+    color: var(--accent-fg);
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .settings-note { font-size: 0.78rem; color: var(--sub); line-height: 1.6; }
 </style>
 </head>
 <body>
-<main>
-  <header>
-    <h1>AIニュースBrief</h1>
-    <div class="date">2026年7月31日</div>
-  </header>
+<header class="top">
+  <button id="settingsBtn" aria-label="設定">⚙️</button>
+  <h1>AIニュースBrief</h1>
+</header>
 
-  <h2>AI業界</h2>
+<div class="datebar">
+  <button id="prevDay" aria-label="前の日">◀</button>
+  <select id="dateSelect"></select>
+  <button id="nextDay" aria-label="次の日">▶</button>
+</div>
 
-  <details>
-    <summary><span class="star">★</span>1. Anthropic、次期主力モデル「Claude Opus 5」を全プラットフォームでリリース</summary>
-    <div class="body">
-      <p>7月24日、Anthropicが新モデル「Claude Opus 5」を発表し全プラットフォームで提供開始した。前モデルOpus 4.8比でコスト効率が向上し、Frontier-BenchやGDPval-AAといったベンチマークで高水準の成績を記録している。Claude Maxの標準モデルとなり、企業・開発者向けの本命モデルという位置付けだ。</p>
-      <div class="career"><b>転職視点：</b>主力モデルの切り替わりは各社の技術力・提案力を測る材料。面接でも直近モデルの特徴を語れると強い。</div>
-      <a href="https://www.axios.com/2026/07/24/anthropic-releases-new-model-opus-5" target="_blank" rel="noopener">出典</a>
-    </div>
-  </details>
-
-  <details>
-    <summary><span class="star">★</span>2. AnthropicとAMD、最大2GW・50億ドル規模のコンピュート提携</summary>
-    <div class="body">
-      <p>AnthropicがAMDのMI450シリーズGPUをHelios筐体で最大2GW調達する契約を締結し、AMDはAnthropicに対し最大50億ドルの株式出資を行う。あわせて、Claude Opus 5自身がAMD製GPUラックを人手を介さず1週末で構築・最適化したという実験結果も公開された。巨大AI企業のインフラ投資競争が続いている。</p>
-      <div class="career"><b>転職視点：</b>AIインフラ・MLOps領域の投資が拡大中。GPU運用やクラウド基盤の知見は今後も強みになる。</div>
-      <a href="https://www.cnbc.com/2026/07/22/amd-anthropic-ai-chip-investment.html" target="_blank" rel="noopener">出典</a>
-    </div>
-  </details>
-
-  <details>
-    <summary>3. 三井不動産、熊本にフィジカルAI・半導体拠点「PASTEC」始動</summary>
-    <div class="body">
-      <p>熊本県合志市の「くまもとサイエンスパーク」内に、自動運転車や産業ロボットなど現実空間で動く「フィジカルAI」向け半導体の実装・パッケージング技術を研究する拠点「PASTEC」を新設。7月27日には台湾2機関を含む国内外7機関との連携協定を締結した。国の地域未来戦略でも重点分野に選定されている。</p>
-      <div class="career"><b>転職視点：</b>フィジカルAI・半導体は国の重点投資分野。製造業出身者がAI領域へキャリアチェンジする際の受け皿になり得る。</div>
-      <a href="https://www.nikkei.com/article/DGXZQOJC234ZO0T20C26A7000000/" target="_blank" rel="noopener">出典</a>
-    </div>
-  </details>
-
-  <details>
-    <summary>4. Sakana AI、無料AI翻訳ツール「Sakana Translate」を公開</summary>
-    <div class="body">
-      <p>日本語・英語・中国語の双方向翻訳に対応したウェブアプリを無料公開。WMT2024の翻訳評価タスクでGemini・GPT-5.5クラスと同等の品質を達成したとしている。今後はAPI提供やオンプレミス展開など法人向け機能の拡充も計画している。</p>
-      <div class="career"><b>転職視点：</b>国産LLMスタートアップが実用サービスで存在感を示す好例。日本語特化の技術力は差別化ポイントになり得る。</div>
-      <a href="https://forest.watch.impress.co.jp/docs/news/2122839.html" target="_blank" rel="noopener">出典</a>
-    </div>
-  </details>
-
-  <details>
-    <summary>5. キオクシア、本日4〜6月期決算を発表 生成AI向けメモリ需要で空前の増益期待</summary>
-    <div class="body">
-      <p>キオクシアホールディングスは31日午後3時30分に2026年4〜6月期決算を開示する。生成AI向けメモリ需要への期待を背景に株価は今年1月の1万円台から6月には一時11万円台まで、半年で約10倍に急騰した。市場予想では売上高が前年同期比5.3倍、営業利益は30倍規模との観測もあり、AIブームが半導体業界の業績を押し上げている構図が鮮明になっている。</p>
-      <div class="career"><b>転職視点：</b>AI需要は半導体・メモリ業界の採用余力にも直結。ハード側からAI業界を狙う選択肢も視野に。</div>
-      <a href="https://www.nikkei.com/article/DGXZQOUB29B7A0Z20C26A7000000/" target="_blank" rel="noopener">出典</a>
-    </div>
-  </details>
-
-  <details>
-    <summary><span class="star">★</span>6. 日本のAIスタートアップ、2026年1〜3月期の資金調達額が2025年通年を上回る</summary>
-    <div class="body">
-      <p>国内スタートアップの2026年上半期の資金調達額は3,779億円で、前年同期比12%増。AI関連の大型案件が全体を押し上げており、中でも1〜3月期の調達額は単四半期として過去最高を記録した。一方で調達額が有力企業に集中する「選別」の傾向も指摘されている。</p>
-      <div class="career"><b>転職視点：</b>資金が集中する企業ほど採用も積極化しやすい。大型調達のニュースは注目企業リストの更新材料になる。</div>
-      <a href="https://www.nikkei.com/article/DGXZQOUC081MY0Y6A600C2000000/" target="_blank" rel="noopener">出典</a>
-    </div>
-  </details>
-
-  <h2>マクロ経済・日本市場</h2>
-
-  <details>
-    <summary><span class="star">★</span>7. 日銀、政策金利1.0%据え置きを決定 成長率見通しは上方修正</summary>
-    <div class="body">
-      <p>日銀は31日の金融政策決定会合で、政策金利を1.0%程度に据え置くことを決定した。6月会合で決めた利上げの効果を見極める姿勢を継続した形で、同時に公表された展望レポートでは2026年度の成長率見通しが上方修正された。植田総裁は午後3時30分から記者会見に臨む。</p>
-      <div class="career"><b>転職視点：</b>金利・景気認識は企業のIT投資予算にも波及。採用市場の温度感を測る先行指標として押さえておきたい。</div>
-      <a href="https://www.nikkei.com/article/DGXZQOUB310PN0R30C26A7000000/" target="_blank" rel="noopener">出典</a>
-    </div>
-  </details>
-
-  <details>
-    <summary>8. 日経平均が大幅続伸、前引けは2,704円高の6万4,572円</summary>
-    <div class="body">
-      <p>31日前場の東京株式市場で日経平均株価は大幅続伸し、前引け時点で前日比2,704円高の6万4,572円をつけた。半導体関連株に買いが集中したほか、前日の米ハイテク株高や韓国株の急伸も投資家心理を上向かせた。</p>
-      <div class="career"><b>転職視点：</b>半導体・AIインフラ関連株の堅調さは、その領域の企業の採用余力にも波及しやすい。</div>
-      <a href="https://www.nikkei.com/article/DGXZQOFL310KL0R30C26A7000000/" target="_blank" rel="noopener">出典</a>
-    </div>
-  </details>
-
-  <details>
-    <summary>9. 円相場が一晩で急変動、163円台から159円台へ 為替介入観測が浮上</summary>
-    <div class="body">
-      <p>30日のニューヨーク外国為替市場で円相場が急伸し、一時1ドル=157円台後半と約2カ月半ぶりの高値をつけた。前日比では約5円もの円高・ドル安となり、市場では日本政府・日銀による円買い介入との観測が広がった。31日朝は159円台後半で推移している。</p>
-      <div class="career"><b>転職視点：</b>急激な為替変動は外資系企業のオファー条件や海外拠点の採用計画にも影響しうる。</div>
-      <a href="https://www.nikkei.com/article/DGXZQOFL30CF60Q6A730C2000000/" target="_blank" rel="noopener">出典</a>
-    </div>
-  </details>
-
-  <h2>AI求人・スキル</h2>
-
-  <details>
-    <summary><span class="star">★</span>10. 生成AIエンジニア市場は「超売り手市場」が継続</summary>
-    <div class="body">
-      <p>経済産業省の推計では2030年までにAI人材が12万人以上不足する見込みで、生成AIエンジニアの求人数は前年比で大幅に増加している。特にRAG構築やLangChainの実務経験を持つ人材への需要が高く、Python・プロンプトエンジニアリング・AIエージェント構築・AI倫理などを組み合わせたスキルセットが評価されている。</p>
-      <div class="career"><b>転職視点：</b>「AIを開発できる」だけでなく「業務成果に結びつけられる」実装経験の提示が選考の鍵になる。</div>
-      <a href="https://ai.appmatch.jp/query-3634/" target="_blank" rel="noopener">出典</a>
-    </div>
-  </details>
-
-  <details>
-    <summary>11. 2026年の採用トレンドは「AIエージェント」を設計・統括できる人材</summary>
-    <div class="body">
-      <p>単発の生成AI呼び出しにとどまらず、複数のAIエージェントを自律連携させる「エージェント型システム」の設計・実装力への評価軸のシフトが進んでいる。エンジニア自身が手を動かすだけでなく、自律的に動くエージェント群を指揮・監督するオーケストレーター的な役割への進化が話題になっている。</p>
-      <div class="career"><b>転職視点：</b>単発のAI活用実績だけでなく、複数エージェントを組み合わせた設計事例を用意できると強みになる。</div>
-      <a href="https://ai.appmatch.jp/query-3634/" target="_blank" rel="noopener">出典</a>
-    </div>
-  </details>
-
-  <details>
-    <summary>12. IT関連職の有効求人倍率は約3.26倍、AIエンジニアの平均年収は558.3万円</summary>
-    <div class="body">
-      <p>厚生労働省の統計によるとIT関連職の有効求人倍率は約3.26倍と、他職種平均を大きく上回る売り手市場が続いている。AIエンジニアの平均年収は558.3万円で、半導体・クラウドインフラ・AIモデル基盤・AI SaaS・コンサル/SIerなど幅広い業界でAI人材の採用ニーズが拡大している。</p>
-      <div class="career"><b>転職視点：</b>業界を問わずAI実装経験が武器になる時代。志望業界を絞りすぎず、AIとの接点で選択肢を広げる視点も有効。</div>
-      <a href="https://career.levtech.jp/guide/knowhow/article/181006/" target="_blank" rel="noopener">出典</a>
-    </div>
-  </details>
-
-  <footer>AIニュースBrief — araiさん専属ダイジェスト</footer>
+<main id="content">
+  <div class="empty-state">読み込み中…</div>
 </main>
+
+<footer class="page-footer">AIニュースBrief — araiさん専属ダイジェスト</footer>
+
+<!-- チャットシート -->
+<div id="chatOverlay" class="overlay hidden">
+  <div class="sheet">
+    <div class="sheet-header">
+      <div class="sheet-title" id="chatArticleTitle"></div>
+      <button class="close" id="chatClose" aria-label="閉じる">✕</button>
+    </div>
+    <div id="chatBody">
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-inputbar">
+        <textarea id="chatInput" rows="1" placeholder="この記事について質問してみる…"></textarea>
+        <button id="chatSend">送信</button>
+      </div>
+      <div class="chat-actions">
+        <button id="chatSaveObsidian">📓 Obsidianに保存</button>
+        <button id="chatNotInterested">🚫 もう出さないで</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 設定シート -->
+<div id="settingsOverlay" class="overlay hidden">
+  <div class="sheet">
+    <div class="sheet-header">
+      <div class="sheet-title">設定</div>
+      <button class="close" id="settingsClose" aria-label="閉じる">✕</button>
+    </div>
+    <div class="settings-body">
+      <label>チャットAPIのURL
+        <input id="cfgApiUrl" placeholder="https://xxxx.workers.dev" autocapitalize="off" autocorrect="off" spellcheck="false">
+      </label>
+      <label>Obsidian Vault名
+        <input id="cfgVault" placeholder="例: Obsidian" autocapitalize="off" autocorrect="off" spellcheck="false">
+      </label>
+      <label>保存先フォルダ（Vault内のパス）
+        <input id="cfgFolder" placeholder="99_情報ソース/AIニュースBrief_チャット" autocapitalize="off" autocorrect="off" spellcheck="false">
+      </label>
+      <button class="save-btn" id="settingsSave">保存</button>
+      <div class="settings-note">
+        チャットAPIのURLはCloudflare Workerのデプロイ後に発行されるURLを入力してください（SETUP.md参照）。Vault名はObsidianアプリに表示されている名前と一致させてください。設定はこの端末のブラウザにのみ保存されます。
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var state = {
+    dates: [],
+    currentDate: null,
+    data: null,
+    chat: { articleId: null, article: null, history: [] }
+  };
+
+  var contentEl = document.getElementById('content');
+  var dateSelect = document.getElementById('dateSelect');
+  var prevDayBtn = document.getElementById('prevDay');
+  var nextDayBtn = document.getElementById('nextDay');
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function formatDateJp(d) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d);
+    if (!m) return d;
+    return m[1] + '年' + parseInt(m[2], 10) + '月' + parseInt(m[3], 10) + '日';
+  }
+
+  // ---------- settings ----------
+  var SETTINGS_KEY = 'ainewsbrief.settings.v1';
+  function loadSettings() {
+    try {
+      return JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {};
+    } catch (e) { return {}; }
+  }
+  function saveSettings(s) {
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(s));
+  }
+  function getApiUrl() {
+    var s = loadSettings();
+    return (s.apiUrl || '').replace(/\/+$/, '');
+  }
+
+  var settingsOverlay = document.getElementById('settingsOverlay');
+  document.getElementById('settingsBtn').addEventListener('click', openSettings);
+  document.getElementById('settingsClose').addEventListener('click', closeSettings);
+  settingsOverlay.addEventListener('click', function (e) { if (e.target === settingsOverlay) closeSettings(); });
+  document.getElementById('settingsSave').addEventListener('click', function () {
+    var s = {
+      apiUrl: document.getElementById('cfgApiUrl').value.trim(),
+      vault: document.getElementById('cfgVault').value.trim(),
+      folder: document.getElementById('cfgFolder').value.trim()
+    };
+    saveSettings(s);
+    closeSettings();
+  });
+
+  function openSettings() {
+    var s = loadSettings();
+    document.getElementById('cfgApiUrl').value = s.apiUrl || '';
+    document.getElementById('cfgVault').value = s.vault || '';
+    document.getElementById('cfgFolder').value = s.folder || '99_情報ソース/AIニュースBrief_チャット';
+    settingsOverlay.classList.remove('hidden');
+  }
+  function closeSettings() { settingsOverlay.classList.add('hidden'); }
+
+  // ---------- rendering ----------
+  function renderArticle(a) {
+    var det = document.createElement('details');
+    det.className = 'card';
+    det.id = 'article-' + a.id;
+
+    var sum = document.createElement('summary');
+    sum.innerHTML = (a.star ? '<span class="star">★</span>' : '') + escapeHtml(a.headline);
+    det.appendChild(sum);
+
+    var body = document.createElement('div');
+    body.className = 'body';
+    var html = '<p>' + escapeHtml(a.detail || a.summary) + '</p>';
+    if (a.careerNote) {
+      html += '<div class="career"><b>転職視点：</b>' + escapeHtml(a.careerNote) + '</div>';
+    }
+    html += '<div class="actions-row">';
+    if (a.sourceUrl) {
+      html += '<a href="' + escapeHtml(a.sourceUrl) + '" target="_blank" rel="noopener">出典: ' + escapeHtml(a.sourceLabel || 'リンク') + '</a>';
+    } else {
+      html += '<span></span>';
+    }
+    html += '<button class="chat-btn" data-id="' + escapeHtml(a.id) + '">💬 AIとチャットする</button>';
+    html += '</div>';
+    body.innerHTML = html;
+    det.appendChild(body);
+
+    body.querySelector('.chat-btn').addEventListener('click', function () {
+      openChat(a);
+    });
+
+    return det;
+  }
+
+  function renderData(data) {
+    contentEl.innerHTML = '';
+    if (!data || !data.sections || !data.sections.length) {
+      contentEl.innerHTML = '<div class="empty-state">この日のニュースはありません。</div>';
+      return;
+    }
+    data.sections.forEach(function (section) {
+      var h2 = document.createElement('h2');
+      h2.textContent = section.title;
+      contentEl.appendChild(h2);
+      (section.articles || []).forEach(function (a) {
+        contentEl.appendChild(renderArticle(a));
+      });
+    });
+  }
+
+  // ---------- date navigation ----------
+  function populateDateSelect() {
+    dateSelect.innerHTML = '';
+    state.dates.forEach(function (d) {
+      var opt = document.createElement('option');
+      opt.value = d;
+      opt.textContent = formatDateJp(d);
+      dateSelect.appendChild(opt);
+    });
+  }
+
+  function updateNavButtons() {
+    var idx = state.dates.indexOf(state.currentDate);
+    // dates[] is newest-first: prev day = older = higher index, next day = newer = lower index
+    prevDayBtn.disabled = idx === -1 || idx >= state.dates.length - 1;
+    nextDayBtn.disabled = idx <= 0;
+    dateSelect.value = state.currentDate;
+  }
+
+  function loadDate(date) {
+    state.currentDate = date;
+    contentEl.innerHTML = '<div class="empty-state">読み込み中…</div>';
+    updateNavButtons();
+    fetch('data/' + date + '.json', { cache: 'no-store' })
+      .then(function (res) {
+        if (!res.ok) throw new Error('status ' + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        state.data = data;
+        renderData(data);
+      })
+      .catch(function (err) {
+        contentEl.innerHTML = '<div class="empty-state">データを読み込めませんでした。<br>(' + escapeHtml(err.message) + ')</div>';
+      });
+  }
+
+  prevDayBtn.addEventListener('click', function () {
+    var idx = state.dates.indexOf(state.currentDate);
+    if (idx > -1 && idx < state.dates.length - 1) loadDate(state.dates[idx + 1]);
+  });
+  nextDayBtn.addEventListener('click', function () {
+    var idx = state.dates.indexOf(state.currentDate);
+    if (idx > 0) loadDate(state.dates[idx - 1]);
+  });
+  dateSelect.addEventListener('change', function () { loadDate(dateSelect.value); });
+
+  // ---------- chat ----------
+  var chatOverlay = document.getElementById('chatOverlay');
+  var chatMessages = document.getElementById('chatMessages');
+  var chatInput = document.getElementById('chatInput');
+  var chatSendBtn = document.getElementById('chatSend');
+  var chatArticleTitle = document.getElementById('chatArticleTitle');
+
+  document.getElementById('chatClose').addEventListener('click', closeChat);
+  chatOverlay.addEventListener('click', function (e) { if (e.target === chatOverlay) closeChat(); });
+
+  function openChat(article) {
+    state.chat = { articleId: article.id, article: article, history: [] };
+    chatArticleTitle.textContent = article.headline;
+    renderChatMessages();
+    var apiUrl = getApiUrl();
+    if (!apiUrl) {
+      chatMessages.innerHTML = '<div class="chat-hint">チャット機能を使うには、右上の⚙️設定でチャットAPIのURLを入力してください（Cloudflare Workerのデプロイが必要です。詳しくはSETUP.mdを参照）。</div>';
+    }
+    chatOverlay.classList.remove('hidden');
+    chatInput.focus();
+  }
+  function closeChat() { chatOverlay.classList.add('hidden'); }
+
+  function renderChatMessages() {
+    chatMessages.innerHTML = '';
+    state.chat.history.forEach(function (m) {
+      var div = document.createElement('div');
+      div.className = 'msg ' + (m.role === 'user' ? 'user' : 'assistant') + (m.pending ? ' pending' : '');
+      div.textContent = m.content;
+      chatMessages.appendChild(div);
+    });
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function setSending(sending) {
+    chatSendBtn.disabled = sending;
+    chatInput.disabled = sending;
+  }
+
+  function sendChatMessage() {
+    var text = chatInput.value.trim();
+    if (!text) return;
+    var apiUrl = getApiUrl();
+    if (!apiUrl) { openSettings(); return; }
+
+    state.chat.history.push({ role: 'user', content: text });
+    chatInput.value = '';
+    renderChatMessages();
+    setSending(true);
+
+    var pendingMsg = { role: 'assistant', content: '…', pending: true };
+    state.chat.history.push(pendingMsg);
+    renderChatMessages();
+
+    fetch(apiUrl + '/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        date: state.currentDate,
+        articleId: state.chat.articleId,
+        article: {
+          headline: state.chat.article.headline,
+          summary: state.chat.article.summary,
+          detail: state.chat.article.detail,
+          sourceUrl: state.chat.article.sourceUrl
+        },
+        history: state.chat.history.slice(0, -2),
+        message: text
+      })
+    })
+      .then(function (res) {
+        if (!res.ok) throw new Error('status ' + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        pendingMsg.content = data.reply || '（応答が空でした）';
+        pendingMsg.pending = false;
+      })
+      .catch(function (err) {
+        pendingMsg.content = '応答を取得できませんでした（' + escapeHtml(err.message) + '）。設定のAPI URLを確認してください。';
+        pendingMsg.pending = false;
+      })
+      .finally(function () {
+        setSending(false);
+        renderChatMessages();
+      });
+  }
+
+  chatSendBtn.addEventListener('click', sendChatMessage);
+  chatInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChatMessage(); }
+  });
+
+  function persistChatLog(extra) {
+    var apiUrl = getApiUrl();
+    if (!apiUrl || !state.chat.history.length) return Promise.resolve();
+    return fetch(apiUrl + '/api/save-chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(Object.assign({
+        date: state.currentDate,
+        articleId: state.chat.articleId,
+        article: state.chat.article,
+        history: state.chat.history.filter(function (m) { return !m.pending; })
+      }, extra || {}))
+    }).catch(function (e) { console.warn('save-chat failed', e); });
+  }
+
+  function sanitizeFilename(s) {
+    return String(s).replace(/[\\/:*?"<>|#^\[\]]/g, '').trim().slice(0, 60);
+  }
+
+  document.getElementById('chatSaveObsidian').addEventListener('click', function () {
+    var s = loadSettings();
+    if (!s.vault) { alert('先に設定でObsidianのVault名を入力してください。'); openSettings(); return; }
+    if (!state.chat.history.length) { alert('保存するチャット履歴がありません。'); return; }
+
+    var folder = (s.folder || '99_情報ソース/AIニュースBrief_チャット').replace(/\/+$/, '');
+    var a = state.chat.article;
+    var filename = folder + '/' + state.currentDate + '_' + sanitizeFilename(a.headline) + '.md';
+
+    var lines = [];
+    lines.push('---');
+    lines.push('created: ' + state.currentDate);
+    lines.push('tags:');
+    lines.push(' - AIニュースBrief/チャット');
+    lines.push('---');
+    lines.push('');
+    lines.push('# ' + a.headline);
+    lines.push('');
+    lines.push('> ' + (a.summary || ''));
+    lines.push('');
+    if (a.sourceUrl) lines.push('出典: [' + (a.sourceLabel || 'リンク') + '](' + a.sourceUrl + ')');
+    lines.push('');
+    lines.push('## チャット履歴');
+    lines.push('');
+    state.chat.history.forEach(function (m) {
+      if (m.pending) return;
+      lines.push('**' + (m.role === 'user' ? 'arai' : 'AI') + ':** ' + m.content);
+      lines.push('');
+    });
+    var content = lines.join('\n');
+
+    var uri = 'obsidian://new?vault=' + encodeURIComponent(s.vault) +
+      '&file=' + encodeURIComponent(filename) +
+      '&content=' + encodeURIComponent(content);
+
+    persistChatLog({ savedToObsidian: true });
+    window.location.href = uri;
+  });
+
+  document.getElementById('chatNotInterested').addEventListener('click', function () {
+    if (!confirm('この記事のテーマは今後の見出し選定から除外するよう記録します。よろしいですか？')) return;
+    state.chat.history.push({ role: 'user', content: '[フィードバック] このテーマはもう取り上げないでください。' });
+    renderChatMessages();
+    persistChatLog({ feedback: 'exclude' }).then(function () {
+      alert('記録しました。明日以降の選定に反映されます（バックエンド未設定の場合は反映されません）。');
+    });
+  });
+
+  // ---------- boot ----------
+  fetch('data/index.json', { cache: 'no-store' })
+    .then(function (res) {
+      if (!res.ok) throw new Error('status ' + res.status);
+      return res.json();
+    })
+    .then(function (idx) {
+      state.dates = idx.dates || [];
+      if (!state.dates.length) throw new Error('no dates');
+      populateDateSelect();
+      loadDate(state.dates[0]);
+    })
+    .catch(function (err) {
+      contentEl.innerHTML = '<div class="empty-state">ニュースデータを読み込めませんでした。<br>(' + escapeHtml(err.message) + ')</div>';
+    });
+})();
+</script>
 </body>
 </html>

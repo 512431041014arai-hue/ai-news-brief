@@ -1,0 +1,13 @@
+name = "ai-news-brief-chat"
+main = "src/index.ts"
+compatibility_date = "2024-11-01"
+
+[vars]
+GITHUB_REPO = "512431041014arai-hue/ai-news-brief"
+GITHUB_BRANCH = "main"
+ALLOWED_ORIGIN = "https://512431041014arai-hue.github.io"
+CHAT_MODEL = "claude-sonnet-5"
+
+# 実際のシークレットはコミットせず、以下のコマンドでユーザー自身の端末から登録する。
+#   wrangler secret put ANTHROPIC_API_KEY
+#   wrangler secret put GITHUB_TOKEN
