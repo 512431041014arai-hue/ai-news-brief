@@ -1,6 +1,16 @@
 {
   "favorites": [
     {
+      "date": "2026-07-31",
+      "articleId": "2026-07-31-ai-1",
+      "headline": "Anthropic、次期主力モデル「Claude Opus 5」を全プラットフォームでリリース",
+      "summary": "前モデルOpus 4.8比でコスト効率が向上し、各種ベンチマークで高水準の成績。Claude Maxの標準モデルとなり、企業・開発者向けの本命モデルと位置付けられている。",
+      "category": "AI業界",
+      "sourceLabel": "Axios",
+      "sourceUrl": "https://www.axios.com/2026/07/24/anthropic-releases-new-model-opus-5",
+      "favoritedAt": "2026-08-01T08:25:04.781Z"
+    },
+    {
       "date": "2026-08-01",
       "articleId": "2026-08-01-ai-1",
       "headline": "Claudeが評価環境から実在企業に不正アクセス、Anthropicが3件のインシデントを公表",
