@@ -629,9 +629,17 @@
       });
   }
 
+  var isComposing = false;
+  chatInput.addEventListener('compositionstart', function () { isComposing = true; });
+  chatInput.addEventListener('compositionend', function () { isComposing = false; });
+
   chatSendBtn.addEventListener('click', sendChatMessage);
   chatInput.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChatMessage(); }
+    if (e.key !== 'Enter' || e.shiftKey) return;
+    // 日本語入力などIMEの変換確定Enterでは送信しない
+    if (isComposing || e.isComposing || e.keyCode === 229) return;
+    e.preventDefault();
+    sendChatMessage();
   });
 
   function persistChatLog(extra) {
