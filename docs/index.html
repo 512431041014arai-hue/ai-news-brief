@@ -436,7 +436,7 @@
 
   // ---------- お気に入り ----------
   function loadFavoritesIndex() {
-    return fetch('data/favorites.json', { cache: 'no-store' })
+    return fetch('data/favorites.json?t=' + Date.now(), { cache: 'no-store' })
       .then(function (res) { if (!res.ok) throw new Error('status ' + res.status); return res.json(); })
       .then(function (data) {
         var map = {};
@@ -579,7 +579,7 @@
   // ---------- お気に入り一覧ビュー ----------
   function renderFavoritesView() {
     contentEl.innerHTML = '<div class="empty-state">読み込み中…</div>';
-    fetch('data/favorites.json', { cache: 'no-store' })
+    fetch('data/favorites.json?t=' + Date.now(), { cache: 'no-store' })
       .then(function (res) {
         if (!res.ok) throw new Error('status ' + res.status);
         return res.json();
@@ -665,7 +665,7 @@
     state.currentDate = date;
     contentEl.innerHTML = '<div class="empty-state">読み込み中…</div>';
     updateNavButtons();
-    fetch('data/' + date + '.json', { cache: 'no-store' })
+    fetch('data/' + date + '.json?t=' + Date.now(), { cache: 'no-store' })
       .then(function (res) {
         if (!res.ok) throw new Error('status ' + res.status);
         return res.json();
@@ -701,7 +701,7 @@
 
   // ---------- boot ----------
   loadFavoritesIndex().then(function () {
-    return fetch('data/index.json', { cache: 'no-store' })
+    return fetch('data/index.json?t=' + Date.now(), { cache: 'no-store' })
       .then(function (res) {
         if (!res.ok) throw new Error('status ' + res.status);
         return res.json();
