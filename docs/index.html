@@ -23,11 +23,6 @@
     --accent: #2260d6;
     --accent-fg: #ffffff;
     --star: #d97706;
-    --danger: #c1394a;
-    --bubble-user: #2260d6;
-    --bubble-user-fg: #ffffff;
-    --bubble-ai: #e9e9ee;
-    --bubble-ai-fg: #1c1c1e;
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -39,11 +34,6 @@
       --accent: #7aa7ff;
       --accent-fg: #0b1220;
       --star: #f5a524;
-      --danger: #ff8a9a;
-      --bubble-user: #3a6ff0;
-      --bubble-user-fg: #ffffff;
-      --bubble-ai: #2a2a2e;
-      --bubble-ai-fg: #f0f0f2;
     }
   }
   * { box-sizing: border-box; }
@@ -148,35 +138,30 @@
   .star { color: var(--star); }
   .body { padding: 14px 16px 16px; font-size: 0.95rem; }
   .body p { margin: 0 0 10px; }
-  .career {
-    background: rgba(34, 96, 214, 0.08);
-    border-left: 3px solid var(--accent);
-    padding: 8px 12px;
-    border-radius: 6px;
-    margin: 0 0 12px;
-    font-size: 0.9rem;
-  }
-  .career b { color: var(--accent); }
   .actions-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-top: 6px;
+    gap: 8px;
+    margin-top: 10px;
     flex-wrap: wrap;
   }
-  .actions-row a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
-  .actions-row a:hover { text-decoration: underline; }
-  .chat-btn {
-    background: var(--accent);
-    color: var(--accent-fg);
+  .actions-row a.source-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.85rem;
+    margin-right: auto;
+  }
+  .actions-row a.source-link:hover { text-decoration: underline; }
+  .action-btn {
     border: none;
     border-radius: 20px;
-    padding: 8px 16px;
-    font-size: 0.88rem;
+    padding: 8px 14px;
+    font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;
   }
+  .action-btn.primary { background: var(--accent); color: var(--accent-fg); }
+  .action-btn.secondary { background: var(--bg); color: var(--fg); border: 1px solid var(--border); }
   footer.page-footer {
     max-width: 640px;
     margin: 40px auto 0;
@@ -190,7 +175,7 @@
     padding: 60px 20px;
   }
 
-  /* overlay / bottom sheet */
+  /* overlay / bottom sheet (設定パネルで使用) */
   .overlay {
     position: fixed;
     left: 0;
@@ -230,76 +215,6 @@
     font-size: 1.2rem;
     cursor: pointer;
     flex-shrink: 0;
-  }
-
-  /* chat */
-  .chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 14px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    min-height: 160px;
-  }
-  .msg { max-width: 85%; padding: 10px 13px; border-radius: 14px; font-size: 0.92rem; white-space: pre-wrap; }
-  .msg.user { align-self: flex-end; background: var(--bubble-user); color: var(--bubble-user-fg); border-bottom-right-radius: 4px; }
-  .msg.assistant { align-self: flex-start; background: var(--bubble-ai); color: var(--bubble-ai-fg); border-bottom-left-radius: 4px; }
-  .msg.system-note { align-self: center; color: var(--sub); font-size: 0.8rem; background: none; padding: 4px; }
-  .msg.pending { opacity: 0.6; }
-  .chat-inputbar {
-    display: flex;
-    gap: 8px;
-    padding: 10px 16px;
-    border-top: 1px solid var(--border);
-  }
-  .chat-inputbar textarea {
-    flex: 1;
-    resize: none;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background: var(--card-bg);
-    color: var(--fg);
-    padding: 10px 12px;
-    font-size: 0.95rem;
-    min-height: 42px;
-    max-height: 120px;
-    font-family: inherit;
-  }
-  .chat-inputbar button {
-    background: var(--accent);
-    color: var(--accent-fg);
-    border: none;
-    border-radius: 10px;
-    padding: 0 18px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .chat-inputbar button:disabled { opacity: 0.5; }
-  .chat-actions {
-    display: flex;
-    gap: 8px;
-    padding: 10px 16px 14px;
-    border-top: 1px solid var(--border);
-    flex-wrap: wrap;
-  }
-  .chat-actions button {
-    flex: 1;
-    min-width: 130px;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background: var(--card-bg);
-    color: var(--fg);
-    padding: 9px 10px;
-    font-size: 0.85rem;
-    cursor: pointer;
-  }
-  .chat-actions button#chatNotInterested { color: var(--danger); }
-  .chat-hint {
-    padding: 16px;
-    color: var(--sub);
-    font-size: 0.88rem;
-    text-align: center;
   }
 
   /* settings */
@@ -343,27 +258,6 @@
 
 <footer class="page-footer">AIニュースBrief — araiさん専属ダイジェスト</footer>
 
-<!-- チャットシート -->
-<div id="chatOverlay" class="overlay hidden">
-  <div class="sheet">
-    <div class="sheet-header">
-      <div class="sheet-title" id="chatArticleTitle"></div>
-      <button class="close" id="chatClose" aria-label="閉じる">✕</button>
-    </div>
-    <div id="chatBody">
-      <div class="chat-messages" id="chatMessages"></div>
-      <div class="chat-inputbar">
-        <textarea id="chatInput" rows="1" placeholder="この記事について質問してみる…"></textarea>
-        <button id="chatSend">送信</button>
-      </div>
-      <div class="chat-actions">
-        <button id="chatSaveObsidian">📓 Obsidianに保存</button>
-        <button id="chatNotInterested">🚫 もう出さないで</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- 設定シート -->
 <div id="settingsOverlay" class="overlay hidden">
   <div class="sheet">
@@ -372,18 +266,15 @@
       <button class="close" id="settingsClose" aria-label="閉じる">✕</button>
     </div>
     <div class="settings-body">
-      <label>チャットAPIのURL
-        <input id="cfgApiUrl" placeholder="https://xxxx.workers.dev" autocapitalize="off" autocorrect="off" spellcheck="false">
-      </label>
       <label>Obsidian Vault名
         <input id="cfgVault" placeholder="例: Obsidian" autocapitalize="off" autocorrect="off" spellcheck="false">
       </label>
       <label>保存先フォルダ（Vault内のパス）
-        <input id="cfgFolder" placeholder="99_情報ソース/AIニュースBrief_チャット" autocapitalize="off" autocorrect="off" spellcheck="false">
+        <input id="cfgFolder" placeholder="99_情報ソース/AIニュースBrief" autocapitalize="off" autocorrect="off" spellcheck="false">
       </label>
       <button class="save-btn" id="settingsSave">保存</button>
       <div class="settings-note">
-        チャットAPIのURLはCloudflare Workerのデプロイ後に発行されるURLを入力してください（SETUP.md参照）。Vault名はObsidianアプリに表示されている名前と一致させてください。設定はこの端末のブラウザにのみ保存されます。
+        Vault名はObsidianアプリに表示されている名前と一致させてください。設定はこの端末のブラウザにのみ保存されます。
       </div>
     </div>
   </div>
@@ -396,8 +287,7 @@
   var state = {
     dates: [],
     currentDate: null,
-    data: null,
-    chat: { articleId: null, article: null, history: [] }
+    data: null
   };
 
   var contentEl = document.getElementById('content');
@@ -438,6 +328,8 @@
 
   // ---------- settings ----------
   var SETTINGS_KEY = 'ainewsbrief.settings.v1';
+  var DEFAULT_FOLDER = '99_情報ソース/AIニュースBrief';
+
   function loadSettings() {
     try {
       return JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {};
@@ -446,10 +338,6 @@
   function saveSettings(s) {
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(s));
   }
-  function getApiUrl() {
-    var s = loadSettings();
-    return (s.apiUrl || '').replace(/\/+$/, '');
-  }
 
   var settingsOverlay = document.getElementById('settingsOverlay');
   document.getElementById('settingsBtn').addEventListener('click', openSettings);
@@ -457,7 +345,6 @@
   settingsOverlay.addEventListener('click', function (e) { if (e.target === settingsOverlay) closeSettings(); });
   document.getElementById('settingsSave').addEventListener('click', function () {
     var s = {
-      apiUrl: document.getElementById('cfgApiUrl').value.trim(),
       vault: document.getElementById('cfgVault').value.trim(),
       folder: document.getElementById('cfgFolder').value.trim()
     };
@@ -467,12 +354,88 @@
 
   function openSettings() {
     var s = loadSettings();
-    document.getElementById('cfgApiUrl').value = s.apiUrl || '';
     document.getElementById('cfgVault').value = s.vault || '';
-    document.getElementById('cfgFolder').value = s.folder || '99_情報ソース/AIニュースBrief_チャット';
+    document.getElementById('cfgFolder').value = s.folder || DEFAULT_FOLDER;
     settingsOverlay.classList.remove('hidden');
   }
   function closeSettings() { settingsOverlay.classList.add('hidden'); }
+
+  // ---------- 「AIに聞いてみる」: ニュースの文脈を持たせてChromeでClaudeを開く ----------
+  function buildClaudePrompt(article) {
+    var lines = [];
+    lines.push('次のニュース記事について教えてください。');
+    lines.push('');
+    lines.push('見出し: ' + article.headline);
+    if (article.summary) lines.push('要約: ' + article.summary);
+    if (article.detail) lines.push('詳細: ' + article.detail);
+    if (article.sourceUrl) lines.push('出典: ' + article.sourceUrl);
+    return lines.join('\n');
+  }
+
+  // Chromeのカスタムスキームで開き、Chromeが無ければ通常のhttpsリンクにフォールバックする
+  function openPreferChrome(httpsUrl) {
+    var chromeUrl = httpsUrl.replace(/^https:\/\//, 'googlechromes://').replace(/^http:\/\//, 'googlechrome://');
+    var timer = setTimeout(function () {
+      window.location.href = httpsUrl;
+    }, 900);
+    function onVisibilityChange() {
+      if (document.hidden) {
+        clearTimeout(timer);
+        document.removeEventListener('visibilitychange', onVisibilityChange);
+      }
+    }
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    window.location.href = chromeUrl;
+  }
+
+  function askClaude(article) {
+    var prompt = buildClaudePrompt(article);
+    // URLでの引き渡しが効かない場合に備えて、クリップボードにもコピーしておく
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(prompt).catch(function () {});
+    }
+    var url = 'https://claude.ai/new?q=' + encodeURIComponent(prompt);
+    openPreferChrome(url);
+  }
+
+  // ---------- Obsidianに保存 ----------
+  function sanitizeFilename(s) {
+    return String(s).replace(/[\\/:*?"<>|#^\[\]]/g, '').trim().slice(0, 60);
+  }
+
+  function saveArticleToObsidian(article) {
+    var s = loadSettings();
+    if (!s.vault) { alert('先に設定でObsidianのVault名を入力してください。'); openSettings(); return; }
+
+    var folder = (s.folder || DEFAULT_FOLDER).replace(/\/+$/, '');
+    var filename = folder + '/' + state.currentDate + '_' + sanitizeFilename(article.headline) + '.md';
+
+    var lines = [];
+    lines.push('---');
+    lines.push('created: ' + state.currentDate);
+    lines.push('tags:');
+    lines.push(' - AIニュースBrief');
+    lines.push('---');
+    lines.push('');
+    lines.push('# ' + article.headline);
+    lines.push('');
+    if (article.summary) { lines.push('> ' + article.summary); lines.push(''); }
+    if (article.detail) { lines.push(article.detail); lines.push(''); }
+    if (article.sourceUrl) {
+      lines.push('出典: [' + (article.sourceLabel || 'リンク') + '](' + article.sourceUrl + ')');
+      lines.push('');
+    }
+    lines.push('## Claudeとの会話');
+    lines.push('');
+    lines.push('（Chromeで開いたClaudeとの会話をここに貼り付けてください）');
+    lines.push('');
+    var content = lines.join('\n');
+
+    var uri = 'obsidian://new?vault=' + encodeURIComponent(s.vault) +
+      '&file=' + encodeURIComponent(filename) +
+      '&content=' + encodeURIComponent(content);
+    window.location.href = uri;
+  }
 
   // ---------- rendering ----------
   function renderArticle(a) {
@@ -487,22 +450,23 @@
     var body = document.createElement('div');
     body.className = 'body';
     var html = '<p>' + escapeHtml(a.detail || a.summary) + '</p>';
-    if (a.careerNote) {
-      html += '<div class="career"><b>転職視点：</b>' + escapeHtml(a.careerNote) + '</div>';
-    }
     html += '<div class="actions-row">';
     if (a.sourceUrl) {
-      html += '<a href="' + escapeHtml(a.sourceUrl) + '" target="_blank" rel="noopener">出典: ' + escapeHtml(a.sourceLabel || 'リンク') + '</a>';
+      html += '<a class="source-link" href="' + escapeHtml(a.sourceUrl) + '" target="_blank" rel="noopener">出典: ' + escapeHtml(a.sourceLabel || 'リンク') + '</a>';
     } else {
-      html += '<span></span>';
+      html += '<span class="source-link"></span>';
     }
-    html += '<button class="chat-btn" data-id="' + escapeHtml(a.id) + '">💬 AIとチャットする</button>';
+    html += '<button class="action-btn primary" data-action="ask">🤖 AIに聞いてみる</button>';
+    html += '<button class="action-btn secondary" data-action="save">📓 Obsidianに保存</button>';
     html += '</div>';
     body.innerHTML = html;
     det.appendChild(body);
 
-    body.querySelector('.chat-btn').addEventListener('click', function () {
-      openChat(a);
+    body.querySelector('[data-action="ask"]').addEventListener('click', function () {
+      askClaude(a);
+    });
+    body.querySelector('[data-action="save"]').addEventListener('click', function () {
+      saveArticleToObsidian(a);
     });
 
     return det;
@@ -570,182 +534,6 @@
     if (idx > 0) loadDate(state.dates[idx - 1]);
   });
   dateSelect.addEventListener('change', function () { loadDate(dateSelect.value); });
-
-  // ---------- chat ----------
-  var chatOverlay = document.getElementById('chatOverlay');
-  var chatMessages = document.getElementById('chatMessages');
-  var chatInput = document.getElementById('chatInput');
-  var chatSendBtn = document.getElementById('chatSend');
-  var chatArticleTitle = document.getElementById('chatArticleTitle');
-
-  document.getElementById('chatClose').addEventListener('click', closeChat);
-  chatOverlay.addEventListener('click', function (e) { if (e.target === chatOverlay) closeChat(); });
-
-  // キーボード表示アニメーション後にビューポート変数と最下部スクロールを再計算する
-  chatInput.addEventListener('focus', function () {
-    setTimeout(function () {
-      syncViewportVars();
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }, 300);
-  });
-
-  function openChat(article) {
-    state.chat = { articleId: article.id, article: article, history: [] };
-    chatArticleTitle.textContent = article.headline;
-    renderChatMessages();
-    var apiUrl = getApiUrl();
-    if (!apiUrl) {
-      chatMessages.innerHTML = '<div class="chat-hint">チャット機能を使うには、右上の⚙️設定でチャットAPIのURLを入力してください（Cloudflare Workerのデプロイが必要です。詳しくはSETUP.mdを参照）。</div>';
-    }
-    chatOverlay.classList.remove('hidden');
-    chatInput.focus();
-  }
-  function closeChat() { chatOverlay.classList.add('hidden'); }
-
-  function renderChatMessages() {
-    chatMessages.innerHTML = '';
-    state.chat.history.forEach(function (m) {
-      var div = document.createElement('div');
-      div.className = 'msg ' + (m.role === 'user' ? 'user' : 'assistant') + (m.pending ? ' pending' : '');
-      div.textContent = m.content;
-      chatMessages.appendChild(div);
-    });
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  }
-
-  function setSending(sending) {
-    chatSendBtn.disabled = sending;
-    chatInput.disabled = sending;
-  }
-
-  function sendChatMessage() {
-    var text = chatInput.value.trim();
-    if (!text) return;
-    var apiUrl = getApiUrl();
-    if (!apiUrl) { openSettings(); return; }
-
-    state.chat.history.push({ role: 'user', content: text });
-    chatInput.value = '';
-    renderChatMessages();
-    setSending(true);
-
-    var pendingMsg = { role: 'assistant', content: '…', pending: true };
-    state.chat.history.push(pendingMsg);
-    renderChatMessages();
-
-    fetch(apiUrl + '/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        date: state.currentDate,
-        articleId: state.chat.articleId,
-        article: {
-          headline: state.chat.article.headline,
-          summary: state.chat.article.summary,
-          detail: state.chat.article.detail,
-          sourceUrl: state.chat.article.sourceUrl
-        },
-        history: state.chat.history.slice(0, -2),
-        message: text
-      })
-    })
-      .then(function (res) {
-        if (!res.ok) throw new Error('status ' + res.status);
-        return res.json();
-      })
-      .then(function (data) {
-        pendingMsg.content = data.reply || '（応答が空でした）';
-        pendingMsg.pending = false;
-      })
-      .catch(function (err) {
-        pendingMsg.content = '応答を取得できませんでした（' + escapeHtml(err.message) + '）。設定のAPI URLを確認してください。';
-        pendingMsg.pending = false;
-      })
-      .finally(function () {
-        setSending(false);
-        renderChatMessages();
-      });
-  }
-
-  var isComposing = false;
-  chatInput.addEventListener('compositionstart', function () { isComposing = true; });
-  chatInput.addEventListener('compositionend', function () { isComposing = false; });
-
-  chatSendBtn.addEventListener('click', sendChatMessage);
-  chatInput.addEventListener('keydown', function (e) {
-    if (e.key !== 'Enter' || e.shiftKey) return;
-    // 日本語入力などIMEの変換確定Enterでは送信しない
-    if (isComposing || e.isComposing || e.keyCode === 229) return;
-    e.preventDefault();
-    sendChatMessage();
-  });
-
-  function persistChatLog(extra) {
-    var apiUrl = getApiUrl();
-    if (!apiUrl || !state.chat.history.length) return Promise.resolve();
-    return fetch(apiUrl + '/api/save-chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(Object.assign({
-        date: state.currentDate,
-        articleId: state.chat.articleId,
-        article: state.chat.article,
-        history: state.chat.history.filter(function (m) { return !m.pending; })
-      }, extra || {}))
-    }).catch(function (e) { console.warn('save-chat failed', e); });
-  }
-
-  function sanitizeFilename(s) {
-    return String(s).replace(/[\\/:*?"<>|#^\[\]]/g, '').trim().slice(0, 60);
-  }
-
-  document.getElementById('chatSaveObsidian').addEventListener('click', function () {
-    var s = loadSettings();
-    if (!s.vault) { alert('先に設定でObsidianのVault名を入力してください。'); openSettings(); return; }
-    if (!state.chat.history.length) { alert('保存するチャット履歴がありません。'); return; }
-
-    var folder = (s.folder || '99_情報ソース/AIニュースBrief_チャット').replace(/\/+$/, '');
-    var a = state.chat.article;
-    var filename = folder + '/' + state.currentDate + '_' + sanitizeFilename(a.headline) + '.md';
-
-    var lines = [];
-    lines.push('---');
-    lines.push('created: ' + state.currentDate);
-    lines.push('tags:');
-    lines.push(' - AIニュースBrief/チャット');
-    lines.push('---');
-    lines.push('');
-    lines.push('# ' + a.headline);
-    lines.push('');
-    lines.push('> ' + (a.summary || ''));
-    lines.push('');
-    if (a.sourceUrl) lines.push('出典: [' + (a.sourceLabel || 'リンク') + '](' + a.sourceUrl + ')');
-    lines.push('');
-    lines.push('## チャット履歴');
-    lines.push('');
-    state.chat.history.forEach(function (m) {
-      if (m.pending) return;
-      lines.push('**' + (m.role === 'user' ? 'arai' : 'AI') + ':** ' + m.content);
-      lines.push('');
-    });
-    var content = lines.join('\n');
-
-    var uri = 'obsidian://new?vault=' + encodeURIComponent(s.vault) +
-      '&file=' + encodeURIComponent(filename) +
-      '&content=' + encodeURIComponent(content);
-
-    persistChatLog({ savedToObsidian: true });
-    window.location.href = uri;
-  });
-
-  document.getElementById('chatNotInterested').addEventListener('click', function () {
-    if (!confirm('この記事のテーマは今後の見出し選定から除外するよう記録します。よろしいですか？')) return;
-    state.chat.history.push({ role: 'user', content: '[フィードバック] このテーマはもう取り上げないでください。' });
-    renderChatMessages();
-    persistChatLog({ feedback: 'exclude' }).then(function () {
-      alert('記録しました。明日以降の選定に反映されます（バックエンド未設定の場合は反映されません）。');
-    });
-  });
 
   // ---------- boot ----------
   fetch('data/index.json', { cache: 'no-store' })
