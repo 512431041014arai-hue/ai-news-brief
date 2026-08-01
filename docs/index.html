@@ -392,7 +392,7 @@
   }
   function closeSettings() { settingsOverlay.classList.add('hidden'); }
 
-  // ---------- 「AIに聞いてみる」: ニュースの文脈を持たせてChromeでClaudeを開く ----------
+  // ---------- 「AIに聞いてみる」: ニュースの文脈を持たせてSafariの別タブでClaudeを開く ----------
   function buildClaudePrompt(article) {
     var lines = [];
     lines.push('次のニュース記事について教えてください。');
@@ -402,22 +402,6 @@
     if (article.detail) lines.push('詳細: ' + article.detail);
     if (article.sourceUrl) lines.push('出典: ' + article.sourceUrl);
     return lines.join('\n');
-  }
-
-  // Chromeのカスタムスキームで開き、Chromeが無ければ通常のhttpsリンクにフォールバックする
-  function openPreferChrome(httpsUrl) {
-    var chromeUrl = httpsUrl.replace(/^https:\/\//, 'googlechromes://').replace(/^http:\/\//, 'googlechrome://');
-    var timer = setTimeout(function () {
-      window.location.href = httpsUrl;
-    }, 900);
-    function onVisibilityChange() {
-      if (document.hidden) {
-        clearTimeout(timer);
-        document.removeEventListener('visibilitychange', onVisibilityChange);
-      }
-    }
-    document.addEventListener('visibilitychange', onVisibilityChange);
-    window.location.href = chromeUrl;
   }
 
   function askClaude(article) {
@@ -431,7 +415,8 @@
     // 自動的に持っていかれることがあるため、一度自ドメイン(Worker)を
     // 経由してから302でclaude.aiへリダイレクトする。
     var bounceUrl = WORKER_BASE + '/goto?u=' + encodeURIComponent(claudeUrl);
-    openPreferChrome(bounceUrl);
+    // Safariの新しいタブで開く（別アプリ(Chrome)は使わない）
+    window.open(bounceUrl, '_blank');
   }
 
   // ---------- お気に入り ----------
