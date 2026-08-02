@@ -1,0 +1,182 @@
+{
+  "date": "2026-08-02",
+  "sections": [
+    {
+      "title": "AI業界・技術関連",
+      "articles": [
+        {
+          "id": "2026-08-02-ai-1",
+          "star": true,
+          "headline": "OpenAI、アクティブユーザー10億人超に　導入企業は200万社超",
+          "summary": "CFOのサラ・フライアー氏は、登録半年後のユーザーは送信メッセージ数が約50%増え、利用用途も約2倍になると説明。",
+          "detail": "「GPT-5.6」シリーズの大幅値下げに続く発表で、利用拡大が研究開発への再投資につながる好循環を強調している。導入企業も200万社を超え、事業利用の広がりを示した。",
+          "sourceLabel": "ITmedia AI+",
+          "sourceUrl": "https://www.itmedia.co.jp/news/article/2608/02/2000000346/"
+        },
+        {
+          "id": "2026-08-02-ai-2",
+          "star": true,
+          "headline": "Google、パーソナルAI「Gemini Spark」を日本でも利用可能に",
+          "summary": "自律的にタスクを処理するパーソナルAIエージェントを160カ国以上に拡大し、日本語対応で提供開始。",
+          "detail": "「Google AI Ultra」「Google AI Pro」加入者向けで、メールやチャット更新をトリガーにクラウド上でバックグラウンド動作する。あわせて発表されたChrome統合機能はまず米国で提供され、日本を含む他国は今後展開予定。",
+          "sourceLabel": "ITmedia AI+",
+          "sourceUrl": "https://www.itmedia.co.jp/news/article/2608/02/2000000347/"
+        },
+        {
+          "id": "2026-08-02-ai-3",
+          "star": true,
+          "headline": "EU、AI生成コンテンツに識別表示義務　8月2日適用開始、違反なら制裁金65億円",
+          "summary": "欧州委員会がAI規制法に基づき、対話型AIとの対話明示やディープフェイクへのAI由来表示を義務化。",
+          "detail": "機械読み取り可能な識別情報の付与も求める。人の行動を不当に操作するなど禁止利用には最大3500万ユーロ（約65億円）か世界年間売上高7%のいずれか高い方の制裁金を科す、EUで最も厳格な部類の規制がいよいよ発効した。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026073101338&g=int"
+        },
+        {
+          "id": "2026-08-02-ai-4",
+          "star": false,
+          "headline": "IBM、AI開発基盤「Bob」にレガシー刷新機能を追加",
+          "summary": "メインフレーム（Z）・IBM i・Java現代化対応の専用パッケージと利用状況追跡ツール「Bobalytics」を実装。",
+          "detail": "14人体制で9カ月かかっていた作業を3カ月に短縮した事例が報告されている。エンタープライズのレガシーシステム刷新をAIで加速する動きの一例。",
+          "sourceLabel": "ITmedia AI+",
+          "sourceUrl": "https://www.itmedia.co.jp/enterprise/articles/2607/31/news094.html"
+        },
+        {
+          "id": "2026-08-02-ai-5",
+          "star": false,
+          "headline": "スクウェア・エニックス、ゲームの品質テストをGeminiで自動化",
+          "summary": "Geminiがゲーム画面を見ながらコントローラーを自動操作し、検証作業を自走。",
+          "detail": "マルチモーダルAIが音と映像から状況を把握できる能力が開発現場で重要だとしている。テスト設計からグラフィックス不具合検出まで幅広い自動化に取り組んでいる。",
+          "sourceLabel": "ITmedia AI+",
+          "sourceUrl": "https://www.itmedia.co.jp/aiplus/article/2607/31/2000000322/"
+        },
+        {
+          "id": "2026-08-02-ai-6",
+          "star": false,
+          "headline": "日立システムズ、SI全工程をAIエージェントで支援する新基盤を発表",
+          "summary": "「Agentic AI Integration Platform」は設計から構築・テスト・保守まで各段階に最適なAIエージェントを配置。",
+          "detail": "確認作業で最大240倍、テスト工程で約200倍の工数削減を実現したとする。SI業界全体でのAI活用の広がりを示す事例。",
+          "sourceLabel": "ITmedia AI+",
+          "sourceUrl": "https://www.itmedia.co.jp/business/articles/2607/31/news049.html"
+        }
+      ]
+    },
+    {
+      "title": "日本経済関連",
+      "articles": [
+        {
+          "id": "2026-08-02-econ-1",
+          "star": true,
+          "headline": "日米、円買い協調介入か　28年ぶりの異例連携で円安阻止",
+          "summary": "7月31日のNY市場で円相場が一時1ドル=157円台前半に急伸。政府・日銀の介入に米当局も加わったとみられる。",
+          "detail": "約3カ月ぶりとなる政府・日銀の円買い介入に米当局も加わったとみられ、日米協調介入は1998年以来28年ぶり。介入後も相場は乱高下を続けており、専門家は155円前後までの円高進行の可能性を指摘している。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026080100340&g=eco"
+        },
+        {
+          "id": "2026-08-02-econ-2",
+          "star": false,
+          "headline": "米財務長官ベッセント氏、円買い介入を援護射撃",
+          "summary": "「円買い介入だけで日本売りが止まるとは考えていない」とコメントし、日米の政策協調の必要性を強調。",
+          "detail": "介入効果を高めるため、通貨・金利政策での日米協調継続を示唆した発言。市場では今後の追加対応への注目が高まっている。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOGN010UA0R00C26A8000000/"
+        },
+        {
+          "id": "2026-08-02-econ-3",
+          "star": false,
+          "headline": "紅海封鎖でホルムズ代替ルートにも危機、日本の原油調達が難路に",
+          "summary": "フーシ派が紅海での海上封鎖を宣言し航行船舶を攻撃。代替ルートだった紅海経由の原油輸送が脅かされている。",
+          "detail": "ホルムズ海峡を避ける代替ルートとして需要が増していた紅海航路が使えなくなりつつあり、スエズ運河経由などの迂回ルートはコスト・日数増加が課題。日本の原油調達選択肢が狭まる懸念が高まっている。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026080100303&g=eco"
+        },
+        {
+          "id": "2026-08-02-econ-4",
+          "star": false,
+          "headline": "OPECプラス、6カ月連続増産を協議へ",
+          "summary": "8月2日に9月の生産方針を協議予定。自主減産の終了に向け増産継続の是非が焦点。",
+          "detail": "原油市場の供給拡大観測が強まっており、価格動向への影響が注目されている。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOGR309PA0Q6A730C2000000/"
+        },
+        {
+          "id": "2026-08-02-econ-5",
+          "star": false,
+          "headline": "日経平均先物、夜間取引で770円安",
+          "summary": "大阪取引所の夜間取引で6万2950円に下落。日中取引の上昇から一転し調整売りが入った。",
+          "detail": "為替介入や中東情勢の緊迫化を受けた市場心理の変化を反映した動き。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOFL31CR60R30C26A7000000/"
+        },
+        {
+          "id": "2026-08-02-econ-6",
+          "star": false,
+          "headline": "デンソー、米国での現地調達を前倒し",
+          "summary": "保護主義的な通商政策への警戒感から、サプライチェーンの現地化を加速する方針を表明。",
+          "detail": "トヨタ系部品大手による対応で、米国の通商政策リスクに備えたサプライチェーン戦略の見直しが広がっていることを示す。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOFD311ZI0R30C26A7000000/"
+        }
+      ]
+    },
+    {
+      "title": "日本政治関連",
+      "articles": [
+        {
+          "id": "2026-08-02-pol-1",
+          "star": true,
+          "headline": "防衛機密、クラウドで運用へ　AI活用を本格化",
+          "summary": "防衛省が機密情報管理をクラウド基盤へ移行する計画を推進、2027年度予算での準備経費計上を検討。",
+          "detail": "衛星や無人機からのデータ急増に対応し、民間の最新AIを取り込みやすくすることで迅速な意思決定を狙う。外部基盤利用に伴うセキュリティ・情報統制が課題となり、政府は年度内に安全基準を整備する予定。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026080100280&g=pol"
+        },
+        {
+          "id": "2026-08-02-pol-2",
+          "star": false,
+          "headline": "消費税減税、財源は予算編成過程で明確に　城内成長戦略相",
+          "summary": "高市首相が表明した食料品の消費税減税について、城内担当相が財源を来年度予算編成過程で明確にする考えを示した。",
+          "detail": "NHKの日曜討論で「特に中低所得の人の負担軽減」が狙いと説明。物価高対応としての位置づけを強調した。",
+          "sourceLabel": "NHK",
+          "sourceUrl": "https://news.web.nhk/newsweb/na/na-k10015194131000"
+        },
+        {
+          "id": "2026-08-02-pol-3",
+          "star": false,
+          "headline": "自民・小林政調会長、消費税減税の党内集約に意欲",
+          "summary": "財源確保について「歳入・歳出全般を見直す」と述べ、基金や特別会計もゼロベースで検討する方針を明示。",
+          "detail": "党内では賛否が分かれており、意見集約に向けた調整が今後の焦点となる。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026080100335&g=pol"
+        },
+        {
+          "id": "2026-08-02-pol-4",
+          "star": false,
+          "headline": "熊本地震、酷暑対応で避難所にクーラー等の物資提供へ　高市首相",
+          "summary": "予想される酷暑日に対応するため、クーラーや保冷シートなど必要物資を避難所に届ける取り組みを進めると表明。",
+          "detail": "被災者の健康と安全を守るための支援策として位置づけられている。",
+          "sourceLabel": "NHK",
+          "sourceUrl": "https://news.web.nhk/newsweb/na/na-k10015193661000"
+        },
+        {
+          "id": "2026-08-02-pol-5",
+          "star": false,
+          "headline": "立民、3党合流の中間整理受け意見集約へ",
+          "summary": "中道改革連合・立憲民主党・公明党が「8月末をめどに結論」とした中間整理をまとめた。",
+          "detail": "立民内には合流に慎重な意見が根強く、意見集約が難航する可能性が指摘されており、今後の合意形成が焦点となる。",
+          "sourceLabel": "NHK",
+          "sourceUrl": "https://news.web.nhk/newsweb/na/na-k10015193111000"
+        },
+        {
+          "id": "2026-08-02-pol-6",
+          "star": false,
+          "headline": "防衛省、国際連携政策を担う局の新設を調整",
+          "summary": "「骨太の方針」に基づく組織見直しの一環として、国際連携に関する政策を担う局の新設を調整。",
+          "detail": "各国との防衛協力を推進し、複雑化する安全保障環境への対応体制を強化する狙い。",
+          "sourceLabel": "NHK",
+          "sourceUrl": "https://news.web.nhk/newsweb/na/na-k10015194031000"
+        }
+      ]
+    }
+  ]
+}
