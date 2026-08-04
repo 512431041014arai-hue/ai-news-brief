@@ -1,0 +1,236 @@
+{
+  "date": "2026-08-04",
+  "sections": [
+    {
+      "title": "AI業界・技術関連",
+      "articles": [
+        {
+          "id": "2026-08-04-ai-1",
+          "star": true,
+          "headline": "パランティア、4〜6月期純利益3倍——AI需要が業績けん引",
+          "summary": "米データ分析大手パランティアの4〜6月期は純利益が前年同期比約3倍、売上高93%増。",
+          "detail": "政府機関向けに加え民間部門のAI活用需要（同149%増）が拡大し、通期見通しも上方修正した。決算後の時間外取引では株価が一時14%超上昇した。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOGN0403F0U6A800C2000000/"
+        },
+        {
+          "id": "2026-08-04-ai-2",
+          "star": true,
+          "headline": "営業支援の「ナレッジワーク」、35億円調達——リコー系と提携",
+          "summary": "第三者割当増資で35億円を調達し、リコージャパンなど新たに10社が出資。",
+          "detail": "三井住友銀行・信託銀行、キヤノンマーケティングジャパン、電通グループなどもCVC経由で参加。資金はAIエージェントの営業データ活用基盤構築や、顧客に常駐する支援人員（FDE）の増員（3年で100〜150人）に充てる。第三者割当増資の累計調達額は約97億円。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOUC3074S0Q6A730C2000000/"
+        },
+        {
+          "id": "2026-08-04-ai-3",
+          "star": false,
+          "headline": "EU、AIの透明性義務の適用を開始——違反に最大1500万ユーロ",
+          "summary": "AI生成コンテンツへのラベル表示・電子透かし等のマーキングが義務化された。",
+          "detail": "対象は生成AIで作成した画像・音声・映像・テキストなど。EUのAI規則は段階施行中で、今回は透明性義務の適用開始にあたる。",
+          "sourceLabel": "ITmedia NEWS",
+          "sourceUrl": "https://www.itmedia.co.jp/news/article/2608/04/2000000366/"
+        },
+        {
+          "id": "2026-08-04-ai-4",
+          "star": false,
+          "headline": "日本ディープラーニング協会、AIガバナンス第三者認証「C認証」を開始",
+          "summary": "企業・自治体のAIガバナンス体制を第三者評価する新制度の運用を開始。",
+          "detail": "NEC、NTTデータ、日立製作所系列など19社以上が参加を表明している。生成AI活用が広がる中、企業のリスク管理・統制体制を評価する枠組みとして位置づけられる。",
+          "sourceLabel": "JDLA",
+          "sourceUrl": "https://www.jdla.org/news/pressrelease/"
+        },
+        {
+          "id": "2026-08-04-ai-5",
+          "star": false,
+          "headline": "PC操作を録画→「Copilot」で作業を代理可能に",
+          "summary": "Microsoftが定型作業を自動で代行させる新アプリを無料公開。",
+          "detail": "PC操作の手順を録画してCopilotに学習させるだけで、繰り返し作業をAIエージェントが再現・代行できるようになる。",
+          "sourceLabel": "ITmedia AI+",
+          "sourceUrl": "https://www.itmedia.co.jp/aiplus/article/2608/04/2000000361/"
+        },
+        {
+          "id": "2026-08-04-ai-6",
+          "star": false,
+          "headline": "AI予算の7割を占める「ITインフラ」、医療機関で予算超過が顕著に",
+          "summary": "医療機関調査で、AI導入予算の約7割がITインフラ整備に充てられていることが判明。",
+          "detail": "中でもITインフラは当初予算を超過しやすい領域であることが分かった。",
+          "sourceLabel": "ITmedia",
+          "sourceUrl": "https://atmarkit.itmedia.co.jp/ait/articles/2608/04/news040.html"
+        },
+        {
+          "id": "2026-08-04-ai-7",
+          "star": false,
+          "headline": "塩野義製薬、生成AIの正答率を50→90%に",
+          "summary": "社内活用する生成AIの正答率を50%から90%へ引き上げたと発表。",
+          "detail": "膨大な社内の機密データの扱い方を最適化したことが精度向上につながったという。",
+          "sourceLabel": "ITmedia",
+          "sourceUrl": "https://kn.itmedia.co.jp/kn/articles/2608/04/news033.html"
+        },
+        {
+          "id": "2026-08-04-ai-8",
+          "star": false,
+          "headline": "Yubico CEO、「AIエージェントには物理認証で防御強化を」",
+          "summary": "AIエージェントによる操作代行が増える中、物理認証の重要性を指摘。",
+          "detail": "パスワードなど知識ベース認証だけでは不十分とし、ハードウェアキーなど物理認証との組み合わせを提案している。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/topics/24032501"
+        }
+      ]
+    },
+    {
+      "title": "日本経済関連",
+      "articles": [
+        {
+          "id": "2026-08-04-econ-1",
+          "star": true,
+          "headline": "日米協調介入後、日銀に早期利上げ圧力——長期金利2.845%に上昇",
+          "summary": "7月31日の日米協調介入を受け、市場では日銀の早期利上げ観測が強まっている。",
+          "detail": "4日の10年債入札は応札倍率が1年ぶりの低さとなり、長期金利は2.845%まで上昇、2年金利も1995年以来の高さとなった。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/markets/"
+        },
+        {
+          "id": "2026-08-04-econ-2",
+          "star": false,
+          "headline": "トヨタ、27年3月期純利益予想を3兆2500億円に上方修正",
+          "summary": "想定為替レートを1ドル＝160円に見直し、純利益予想を3兆円から引き上げた。",
+          "detail": "4〜6月期は前年同期比75.6%増益と好調だった一方、発表後は円高進行への警戒から株価は伸び悩んだ。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOFD031AG0T00C26A8000000/"
+        },
+        {
+          "id": "2026-08-04-econ-3",
+          "star": false,
+          "headline": "三菱重工業、4〜6月期純利益97%増——4年連続最高益",
+          "summary": "純利益は前年同期比97%増の1346億円。ガスタービンや原子力関連が牽引。",
+          "detail": "同時期として4年連続で過去最高益を更新した。受注も3割増となった。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOUB032UK0T00C26A8000000/"
+        },
+        {
+          "id": "2026-08-04-econ-4",
+          "star": false,
+          "headline": "大手賃上げ率5.37%、3年連続5%超——経団連春闘最終集計",
+          "summary": "経団連が2026年春闘の最終集計を発表。",
+          "detail": "定期昇給とベースアップを含む大手企業の賃上げ率は5.37%と、3年連続で5%を超えた。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/list?g=eco"
+        },
+        {
+          "id": "2026-08-04-econ-5",
+          "star": false,
+          "headline": "TSMC、熊本工場の復旧を確認——被災地に2.5億円寄付",
+          "summary": "7月28日の地震で停止していた熊本工場（菊陽町）の復旧を確認。",
+          "detail": "全従業員の安全も確認され、熊本の復興支援として2.5億円の寄付を決めた。",
+          "sourceLabel": "時事通信/Yahoo!ニュース",
+          "sourceUrl": "https://news.yahoo.co.jp/articles/a7a77c9822619d42f22c6e2462501c5c6b345afb"
+        },
+        {
+          "id": "2026-08-04-econ-6",
+          "star": false,
+          "headline": "日経平均、4日終値202円高——AI・半導体関連が支え",
+          "summary": "前日比202円63銭高の6万3957円53銭で反発。",
+          "detail": "前日の米ハイテク株高を受けAI・半導体・データセンター関連株が買われた一方、協調介入後の円高進行で自動車・商社株には売りが出た。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOFL040QATU6A800C2000000/"
+        },
+        {
+          "id": "2026-08-04-econ-7",
+          "star": false,
+          "headline": "農林水産物・食品輸出、上半期10.9%増で過去最高",
+          "summary": "2026年上半期の輸出額が前年同期比10.9%増となり過去最高を更新。",
+          "detail": "緑茶やブリの輸出がけん引した。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/list?g=eco"
+        },
+        {
+          "id": "2026-08-04-econ-8",
+          "star": false,
+          "headline": "6月の国際航空貨物輸出、14.6%増——アジア向けが拡大",
+          "summary": "国際航空貨物輸出は重量ベースで前年同月比14.61%増。",
+          "detail": "アジア・オセアニア向けが21.44%増と特に伸びた。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/list?g=eco"
+        }
+      ]
+    },
+    {
+      "title": "日本政治関連",
+      "articles": [
+        {
+          "id": "2026-08-04-pol-1",
+          "star": true,
+          "headline": "高市首相、熊本地震の断水を月内解消へ指示",
+          "summary": "非常災害対策本部会議で、8月末までの断水完全解消を全力で進めるよう指示。",
+          "detail": "給水車の全国からの動員や、海水・河川水を浄化する淡水化装置の配備も指示した。政府は熊本地震の復旧に向け、予備費242億円の追加支出も決定した。",
+          "sourceLabel": "NHK",
+          "sourceUrl": "https://news.web.nhk/newsweb/genre/politics"
+        },
+        {
+          "id": "2026-08-04-pol-2",
+          "star": true,
+          "headline": "防衛白書、中国を「最大の戦略的挑戦」と明記",
+          "summary": "無人機・AIなど「新しい戦い方」への対応を特集し、備えの急務を訴えた。",
+          "detail": "ウクライナ戦況を踏まえ、安価な無人装備と従来型ミサイルを組み合わせた複合攻撃への備えを強調。中国については「総合的な国力」と同盟国・同志国との連携で対処する方針を示した。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026080400394&g=pol"
+        },
+        {
+          "id": "2026-08-04-pol-3",
+          "star": false,
+          "headline": "外国人の永住許可要件を厳格化——年収は日本人世帯平均超が原則に",
+          "summary": "出入国在留管理庁が永住許可ガイドラインを10月に改定する方針。",
+          "detail": "年収が日本人世帯平均を上回り、将来の年金受給見込みが厚生年金30年加入相当に達していることを要件とする。日本語能力や制度理解も考慮し、来年4月申請分から適用する。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOUA035500T00C26A8000000/"
+        },
+        {
+          "id": "2026-08-04-pol-4",
+          "star": false,
+          "headline": "特定技能2号、在留5年で申請可能に",
+          "summary": "政府が外国人材向け「特定技能2号」の在留5年での申請解禁方針を固めた。",
+          "detail": "来年1月の施行を目指す。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/list?g=pol"
+        },
+        {
+          "id": "2026-08-04-pol-5",
+          "star": false,
+          "headline": "高市首相、広島・長崎の原爆式典に出席へ——米大使は欠席",
+          "summary": "首相は原爆の日の式典出席を決定。米国は駐日大使が欠席し首席公使が代理出席へ。",
+          "detail": "",
+          "sourceLabel": "NHK",
+          "sourceUrl": "https://news.web.nhk/newsweb/genre/politics"
+        },
+        {
+          "id": "2026-08-04-pol-6",
+          "star": false,
+          "headline": "茂木外相、メキシコ外相と会談——経済安全保障で対話強化",
+          "summary": "茂木外相とメキシコ外相が会談し、経済安全保障を含む対話強化で一致。",
+          "detail": "日メキシコ経済対話は年度内の初開催を目指す。",
+          "sourceLabel": "NHK",
+          "sourceUrl": "https://news.web.nhk/newsweb/genre/politics"
+        },
+        {
+          "id": "2026-08-04-pol-7",
+          "star": false,
+          "headline": "国民民主・玉木代表、消費減税了承の自民を批判",
+          "summary": "自民党の食料品消費税減税の事実上了承について「ブレーキもハンドルもない」と批判。",
+          "detail": "",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/list?g=pol"
+        },
+        {
+          "id": "2026-08-04-pol-8",
+          "star": false,
+          "headline": "熊本地震、AI画像の拡散を批判——小野田防災担当相",
+          "summary": "地震に関連し事実と異なるAI生成画像がSNS上で拡散している状況を批判。",
+          "detail": "",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/list?g=pol"
+        }
+      ]
+    }
+  ]
+}
