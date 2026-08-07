@@ -1,6 +1,16 @@
 {
   "favorites": [
     {
+      "date": "2026-08-06",
+      "articleId": "2026-08-06-ai-1",
+      "headline": "Google DeepMind、ハサビスCEOが会長に退任 ジェフ・ディーン氏は独立し新会社設立",
+      "summary": "ピチャイCEOが8月5日発表。ハサビス氏は会長兼Alphabetチーフサイエンティストへ、ディーン氏はGoogleを退社し新会社「Discovery Loop」を設立。",
+      "category": "AI業界・技術関連",
+      "sourceLabel": "ITmedia",
+      "sourceUrl": "https://www.itmedia.co.jp/news/article/2608/06/2000000407/",
+      "favoritedAt": "2026-08-07T05:49:48.289Z"
+    },
+    {
       "date": "2026-08-04",
       "articleId": "2026-08-04-econ-4",
       "headline": "大手賃上げ率5.37%、3年連続5%超——経団連春闘最終集計",
