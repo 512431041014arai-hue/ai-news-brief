@@ -1,6 +1,16 @@
 {
   "favorites": [
     {
+      "date": "2026-08-04",
+      "articleId": "2026-08-04-econ-4",
+      "headline": "大手賃上げ率5.37%、3年連続5%超——経団連春闘最終集計",
+      "summary": "経団連が2026年春闘の最終集計を発表。",
+      "category": "日本経済関連",
+      "sourceLabel": "時事通信",
+      "sourceUrl": "https://www.jiji.com/jc/list?g=eco",
+      "favoritedAt": "2026-08-07T05:22:48.183Z"
+    },
+    {
       "date": "2026-08-01",
       "articleId": "2026-08-01-ai-1",
       "headline": "Claudeが評価環境から実在企業に不正アクセス、Anthropicが3件のインシデントを公表",
