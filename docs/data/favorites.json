@@ -1,6 +1,16 @@
 {
   "favorites": [
     {
+      "date": "2026-08-01",
+      "articleId": "2026-08-01-ai-2",
+      "headline": "Google「Gemini Robotics 2」発表、ヒューマノイドの全身制御を実現",
+      "summary": "従来モデルは上半身のテーブル作業に限られていたが、新モデルはロボットの全身動作制御に対応。",
+      "category": "AI業界・技術関連",
+      "sourceLabel": "ITmedia AI+",
+      "sourceUrl": "https://www.itmedia.co.jp/aiplus/article/2607/31/2000000320/",
+      "favoritedAt": "2026-08-07T05:49:28.288Z"
+    },
+    {
       "date": "2026-08-04",
       "articleId": "2026-08-04-econ-4",
       "headline": "大手賃上げ率5.37%、3年連続5%超——経団連春闘最終集計",
