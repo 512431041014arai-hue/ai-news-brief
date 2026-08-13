@@ -1,0 +1,290 @@
+{
+  "date": "2026-08-13",
+  "sections": [
+    {
+      "title": "AI業界・技術関連",
+      "articles": [
+        {
+          "id": "2026-08-13-ai-1",
+          "star": false,
+          "headline": "OpenAI「Codex」利用者1500万人突破",
+          "summary": "OpenAI幹部が8月12日発表。GPT-5.6公開後に成長が加速した。",
+          "detail": "コーディングAIツール「Codex」のアクティブユーザーが1500万を超えたとOpenAI幹部のティボ・ソティオ氏が8月12日に発表した。7月のGPT-5.6公開後に成長が加速し、7月21日時点の1000万ユーザーから急拡大した。これに伴い利用制限がリセットされ、ユーザーにFastモードの利用が呼びかけられた。",
+          "sourceLabel": "ITmedia AI+",
+          "sourceUrl": "https://www.itmedia.co.jp/aiplus/article/2608/13/2000000525/"
+        },
+        {
+          "id": "2026-08-13-ai-2",
+          "star": true,
+          "headline": "xAI、新モデル「Grok 4.6」と自律型エージェント「Grok Bot」を発表",
+          "summary": "8月12日発表。ベンチマークでOpenAIのGPT-5.6 Sol Maxと同等の性能。",
+          "detail": "xAI（SpaceXAI）は8月12日、AIモデル「Grok 4.6」と、24時間稼働する自律型AIエージェント「Grok Bot」を発表した。複数工程のエージェント用途と対話的・視覚的な成果物作成に重点を置いた設計で、ベンチマーク「Artificial Analysis Intelligence Index」でスコア61を記録しOpenAIのGPT-5.6 Sol Maxと同等の性能を示した。法務分野「Harvey LAB」などでは最高値を達成した一方、ソフトウェアエンジニアリング系タスクではOpenAIモデルに後れを取る。同日からGrok Build・Cursor・APIなど複数プラットフォームで提供が始まった。",
+          "sourceLabel": "ITmedia",
+          "sourceUrl": "https://www.itmedia.co.jp/news/article/2608/13/2000000520/"
+        },
+        {
+          "id": "2026-08-13-ai-3",
+          "star": true,
+          "headline": "中国発AIエージェント「Manus」、Metaから独立へ",
+          "summary": "8月11日発表。中国政府の反発で買収が撤回に。テンセントが筆頭株主候補。",
+          "detail": "中国発のAIエージェント「Manus」が8月11日、米Metaからの分離・独立を発表した。2025年12月に約20億ドルで買収されたが、AIを国策とする中国政府が反発し、国家発展改革委員会が26年4月に買収を認めず撤回を命じていた。Metaの傘下期間中に生成された一部データは8月23〜24日に削除される予定で、独立後はテンセントが既存投資家とともにMetaから株式を買い戻し筆頭株主となる方向で協議されていると報じられている。",
+          "sourceLabel": "ITmedia",
+          "sourceUrl": "https://www.itmedia.co.jp/news/article/2608/12/2000000508/"
+        },
+        {
+          "id": "2026-08-13-ai-4",
+          "star": true,
+          "headline": "Google「Gemini」アプリ、月間アクティブユーザー10億人突破",
+          "summary": "ピチャイCEOが8月11日発表。ChatGPTも6月に同水準へ到達済み。",
+          "detail": "Google CEOのスンダー・ピチャイ氏は8月11日、Geminiアプリの月間アクティブユーザー数が10億人を超えたとXで発表した。Google製品として14番目に10億ユーザーへ到達し、「最も急速に成長した製品」だと述べた。この数字はGeminiアプリ単体で、検索やWorkspaceに統合されたGeminiは別計上。競合のChatGPTも6月に同水準へ達しており、AI市場での競争が激化している。",
+          "sourceLabel": "ITmedia",
+          "sourceUrl": "https://www.itmedia.co.jp/news/article/2608/12/2000000500/"
+        },
+        {
+          "id": "2026-08-13-ai-5",
+          "star": true,
+          "headline": "Anthropic「Claude」、リーマン予想研究で新たな下限値を発見",
+          "summary": "約60体のサブエージェントが1日半かけて研究し、下限値を41.6%から67.2%へ引き上げ。",
+          "detail": "Anthropicの研究版Claudeが、数学の未解決問題「リーマン予想」に関連する研究で新発見をもたらした。約60体のサブエージェントを連携させ約1日半かけて研究を進め、従来の下限41.6%を67.2%まで引き上げる手法を発見した。当初650個のアイデアが失敗したが、励ましのメッセージを受けた後に当初の懐疑的な姿勢を克服できたとAnthropicは説明している。",
+          "sourceLabel": "ITmedia AI+",
+          "sourceUrl": "https://www.itmedia.co.jp/aiplus/article/2608/13/2000000511/"
+        },
+        {
+          "id": "2026-08-13-ai-6",
+          "star": false,
+          "headline": "NVIDIA、常時稼働エージェント向けオープンモデル「Nemotron 3.5 Lightning」公開",
+          "summary": "30億パラメータのMoEモデル。8月12日公開。",
+          "detail": "NVIDIAは8月12日、30億パラメータのオープンモデル「Nemotron 3.5 Lightning」を公開した。「OpenClaw」「Hermes Agent」といった常時稼働型のAIエージェント向けに設計され、MoEアーキテクチャにより小規模モデル並みのコストで大規模モデル並みの処理能力を実現。投機的デコーディングと量子化技術により高速生成を両立させ、4倍のパラメータ数を持つ競合モデルと同等の性能評価を得ている。",
+          "sourceLabel": "ITmedia AI+",
+          "sourceUrl": "https://www.itmedia.co.jp/aiplus/article/2608/12/2000000503/"
+        },
+        {
+          "id": "2026-08-13-ai-7",
+          "star": false,
+          "headline": "メルカリ、「Claude Code」全社展開とシャドーAI対策の舞台裏",
+          "summary": "2026年5月に全社展開。MDM・IDPで未承認AIツールを監視。",
+          "detail": "メルカリは2026年5月に「Claude Code」と「Claude Cowork」の全社展開を開始した。セキュリティ対策としてMDMやIDPを活用し、承認されていないAIツール利用（シャドーAI）を監視・管理。OSS「LiteLLM」の導入で複数AIモデルへのアクセスとAPIキーを一元管理し、AIエージェント導入に伴いエンジニアの役割・スキルの再定義も進めている。",
+          "sourceLabel": "ITmedia／@IT",
+          "sourceUrl": "https://atmarkit.itmedia.co.jp/ait/articles/2608/04/news002.html"
+        },
+        {
+          "id": "2026-08-13-ai-8",
+          "star": false,
+          "headline": "Sakana AI、「Sakana Fugu」を無料公開",
+          "summary": "チャットAIをアップデートし、8月13日から無料で試用可能に。",
+          "detail": "国内AIスタートアップのSakana AIは8月13日、チャットAI「Sakana Fugu」を無料で試せるようアップデートを発表した。",
+          "sourceLabel": "ITmedia AI+",
+          "sourceUrl": "https://www.itmedia.co.jp/aiplus/article/2608/13/2000000524/"
+        },
+        {
+          "id": "2026-08-13-ai-9",
+          "star": false,
+          "headline": "Apple、「Siri」でのニュース配信巡りメディアと協議",
+          "summary": "WSJ報道として8月13日伝わる。",
+          "detail": "AppleがSiriを通じたニュース配信の実現に向け複数メディアと協議していると、米ウォール・ストリート・ジャーナルが報じた。8月13日に日本経済新聞が伝えた。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOGN130C20T10C26A8000000/"
+        },
+        {
+          "id": "2026-08-13-ai-10",
+          "star": false,
+          "headline": "米AI半導体セレブラス、株価一時17%急落",
+          "summary": "ハードウェア部門の減収が嫌気された。",
+          "detail": "AI半導体企業の米セレブラスの株価が8月13日、一時17%急落した。ハードウェア部門の減収が投資家に嫌気されたことが背景。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOGN1300M0T10C26A8000000/"
+        }
+      ]
+    },
+    {
+      "title": "日本経済関連",
+      "articles": [
+        {
+          "id": "2026-08-13-econ-1",
+          "star": true,
+          "headline": "日経平均、午前1085円高 AI・半導体買いで最高値圏",
+          "summary": "8月13日午前、AI・半導体関連銘柄への買いが指数を押し上げた。",
+          "detail": "8月13日午前の東京株式市場で日経平均株価は1085円高となり、最高値圏で推移した。AI・半導体関連銘柄への買いが続き、過度な金融引き締めも景気後退も避けられるとの「適温経済」期待が相場を支えている。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOFL130KOTT10C26A8000000/"
+        },
+        {
+          "id": "2026-08-13-econ-2",
+          "star": true,
+          "headline": "円相場、一時159円台半ばに下落 介入警戒も160円に迫る",
+          "summary": "8月12日、7月31日の協調介入以来の安値を記録。",
+          "detail": "8月12日の東京外国為替市場で円相場は一時1ドル=159円台半ばまで下落し、7月31日の協調介入以来の安値を記録した。中東情勢の不透明感による原油価格上昇と、日本の貿易収支悪化懸念が円売り要因。市場では追加介入の可能性が意識されているが、円安の基調要因が変わらない限り下落基調は続くとの見方が大勢で、午後5時時点では159円36〜37銭（前営業日比88銭の円安・ドル高）だった。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081200719&g=eco"
+        },
+        {
+          "id": "2026-08-13-econ-3",
+          "star": true,
+          "headline": "7月の企業物価指数、前年比7.2%上昇 中東情勢で高止まり",
+          "summary": "日銀発表。515品目中434品目が上昇。",
+          "detail": "日銀が発表した7月の国内企業物価指数は135.8となり、前年同月比7.2%上昇した。原油価格の高騰が一服し上げ幅は前月から0.1ポイント縮小したものの、中東情勢の悪化により非鉄金属や石油・石炭製品など幅広い品目で価格が高止まりしている。調査対象515品目のうち434品目が上昇し、69品目が下落した。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081300252&g=eco"
+        },
+        {
+          "id": "2026-08-13-econ-4",
+          "star": false,
+          "headline": "長期金利2.855%で高止まり",
+          "summary": "8月13日、日銀オペ結果が「弱め」と受け止められた。",
+          "detail": "8月13日、日本の長期金利は2.855%で高止まりした。日銀の国債買い入れオペの結果が「弱め」と受け止められ、金利上昇圧力が継続している。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOFL132MK0T10C26A8000000/"
+        },
+        {
+          "id": "2026-08-13-econ-5",
+          "star": false,
+          "headline": "個人向け国債、発行が金利上昇で最高ペース",
+          "summary": "4〜8月の発行額が前年比6割増。",
+          "detail": "金利上昇を背景に個人向け国債の発行が過去最高ペースとなっており、4〜8月の発行額は前年比6割増となった。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOUA056190V00C26A8000000/"
+        },
+        {
+          "id": "2026-08-13-econ-6",
+          "star": false,
+          "headline": "東京株、TOPIXが最高値更新 553円高",
+          "summary": "8月12日の東京株式市場で記録。",
+          "detail": "8月12日の東京株式市場で日経平均株価は553円高となり、東証株価指数（TOPIX）は最高値を更新した。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081200730&g=eco"
+        },
+        {
+          "id": "2026-08-13-econ-7",
+          "star": false,
+          "headline": "豚肉・鶏肉、最高値更新 8月の小売り調査",
+          "summary": "農水省が8月12日発表。2003年8月の調査開始以来の最高値。",
+          "detail": "農林水産省が8月12日に発表した食品価格動向調査によると、豚肉（ロース）と鶏肉（もも肉）の全国平均小売価格が2003年8月の調査開始以降の最高値を更新した。円安進行による輸入品の価格高騰と、国産品の需給逼迫が主な要因で、家計を直撃する食料品の値上げ問題として位置づけられている。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081200845&g=eco"
+        },
+        {
+          "id": "2026-08-13-econ-8",
+          "star": false,
+          "headline": "トヨタ発展の礎を築いた奥田碩氏死去",
+          "summary": "財界でも剛腕を発揮した元トヨタ自動車会長の訃報。",
+          "detail": "トヨタ自動車の世界的発展の礎を築き、日本経団連会長も務めるなど財界でも剛腕を発揮した奥田碩氏が死去したと8月12日伝えられた。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081200765&g=eco"
+        },
+        {
+          "id": "2026-08-13-econ-9",
+          "star": false,
+          "headline": "熊本地震、観光業に約60億円の被害 夏休み直撃",
+          "summary": "宿泊キャンセルが相次いだ。",
+          "detail": "熊本地震の影響で観光業に約60億円の被害が出たことが8月12日伝えられた。夏休み期間の書き入れ時に宿泊キャンセルが相次いだ。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081200640&g=eco"
+        },
+        {
+          "id": "2026-08-13-econ-10",
+          "star": false,
+          "headline": "カナダ産原油、日本に初到着 高市首相「多角化に意義深い」",
+          "summary": "エネルギー調達源の多角化の一環。",
+          "detail": "カナダ産原油が8月12日、日本に初めて到着した。高市首相はエネルギー調達源の多角化について「意義深い」とコメントした。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081200712&g=eco"
+        }
+      ]
+    },
+    {
+      "title": "日本政治関連",
+      "articles": [
+        {
+          "id": "2026-08-13-pol-1",
+          "star": true,
+          "headline": "プーチン大統領、北方領土(択捉島)を初訪問 日本政府は抗議",
+          "summary": "8月13日、水産加工場を視察し実効支配を強調。日本政府は即座に抗議。",
+          "detail": "ロシアのプーチン大統領は8月13日、北方領土の択捉島を訪問し水産加工場を視察した。「クリール諸島はロシア領と国際文書で確定している」と主張し実効支配を強調。2010年のメドベージェフ大統領以来の高位政治家による現地入りとなった。日本政府は即座に抗議し、「北方四島は日本固有の領土」との従来の立場を改めて表明した。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081300526&g=pol"
+        },
+        {
+          "id": "2026-08-13-pol-2",
+          "star": false,
+          "headline": "国旗損壊処罰法、13日施行",
+          "summary": "著しく不快な方法での国旗損壊に2年以下の拘禁刑・20万円以下の罰金。",
+          "detail": "「著しく不快または嫌悪の情を催させる方法」で国旗を公然と損壊する行為を禁じる国旗損壊処罰法が8月13日に施行された。違反者には2年以下の拘禁刑または20万円以下の罰金が科される。実物の国旗のみが対象で、アニメや生成AI画像は除外され表現の自由に配慮した留保規定が設けられたが、国会審議ではどの行為が該当するかの不明確さが批判されたまま施行された。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081200596&g=pol"
+        },
+        {
+          "id": "2026-08-13-pol-3",
+          "star": false,
+          "headline": "外国人政策の厳格化加速、高市政権「永住」要件を厳格化",
+          "summary": "8月13日報道。",
+          "detail": "高市政権のもとで外国人政策の厳格化が加速しており、永住許可の要件厳格化などが進められていると8月13日伝えられた。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081200583&g=pol"
+        },
+        {
+          "id": "2026-08-13-pol-4",
+          "star": true,
+          "headline": "高市首相、靖国参拝見送りの公算 終戦記念日、外交配慮",
+          "summary": "日韓関係維持や11月APEC首脳会談への影響を考慮したとみられる。",
+          "detail": "高市早苗首相は8月15日の終戦記念日に靖国神社への参拝を見送る見通しであることが複数の関係者の話で分かった。日韓のシャトル外交の維持、11月の中国APEC首脳会議での習近平国家主席との会談実現への影響、日中関係の悪化を懸念する米国トランプ政権への配慮が背景にあるとみられる。過去には参拝時に米国から「失望」を表明された前例もある。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081200732&g=pol"
+        },
+        {
+          "id": "2026-08-13-pol-5",
+          "star": false,
+          "headline": "高市首相、イラン大統領と電話会談 ホルムズ海峡通航料は容認せず",
+          "summary": "8月12日実施。",
+          "detail": "高市首相は8月12日、イラン大統領と電話会談を行い、ホルムズ海峡の通航料構想については容認しない考えを伝えた。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081200754&g=pol"
+        },
+        {
+          "id": "2026-08-13-pol-6",
+          "star": true,
+          "headline": "北朝鮮、弾道ミサイル発射 日本のEEZ外に落下か",
+          "summary": "8月12日午前6時発射。最高高度約90km、飛行距離約690km。",
+          "detail": "北朝鮮は8月12日午前6時、江原道元山周辺から日本海に向けて弾道ミサイルを発射した。防衛省によると最高高度約90キロで約690キロ飛行し、日本の排他的経済水域（EEZ）外に落下したと推定される。小泉進次郎防衛相は「わが国、地域および国際社会の平和と安全を脅かすもの」と非難し、北京の大使館ルートを通じ厳重に抗議した。米韓合同演習の予定時期に合わせた発射とみられる。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081200152&g=pol"
+        },
+        {
+          "id": "2026-08-13-pol-7",
+          "star": false,
+          "headline": "坂口力・元厚労相死去、92歳",
+          "summary": "公明党初代厚生労働相を務めた。",
+          "detail": "公明党の初代厚生労働相を務めた坂口力氏が老衰のため死去した。92歳だった。ハンセン病訴訟を巡る控訴断念の判断でも知られる。",
+          "sourceLabel": "時事通信／NHK",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081200534&g=pol"
+        },
+        {
+          "id": "2026-08-13-pol-8",
+          "star": false,
+          "headline": "れいわ参院会派、「いのちの党」に名称変更",
+          "summary": "8月12日。",
+          "detail": "れいわ新選組の参議院会派が8月12日、「いのちの党」に名称を変更した。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081200728&g=pol"
+        },
+        {
+          "id": "2026-08-13-pol-9",
+          "star": false,
+          "headline": "弾道ミサイル発射の事前通報を、中国念頭に日米など共同声明",
+          "summary": "8月12日発表。",
+          "detail": "日米などが8月12日、弾道ミサイル発射の事前通報を求める共同声明を発表した。中国を念頭に置いた内容とみられる。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081200265&g=pol"
+        },
+        {
+          "id": "2026-08-13-pol-10",
+          "star": false,
+          "headline": "沖縄知事選、玉城氏が政策発表「辺野古反対の民意守り抜く」",
+          "summary": "8月12日。",
+          "detail": "沖縄知事選に向け、玉城氏が8月12日に政策を発表し、米軍普天間飛行場の名護市辺野古移設に反対する「民意を守り抜く」と表明した。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081200793&g=pol"
+        }
+      ]
+    }
+  ]
+}
