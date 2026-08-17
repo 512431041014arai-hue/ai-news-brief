@@ -1,6 +1,16 @@
 {
   "favorites": [
     {
+      "date": "2026-08-16",
+      "articleId": "2026-08-16-ai-1",
+      "headline": "Anthropic「Claude」の電子透かし機能にネット上で反発",
+      "summary": "EU AI法の透明性義務に対応し、Claudeが生成する文章に統計的な電子透かしを埋め込む仕様に。SNSで反発が広がった。",
+      "category": "AI業界・技術関連",
+      "sourceLabel": "日本経済新聞",
+      "sourceUrl": "https://www.nikkei.com/",
+      "favoritedAt": "2026-08-17T11:11:26.348Z"
+    },
+    {
       "date": "2026-08-06",
       "articleId": "2026-08-06-ai-3",
       "headline": "Meta、コーディングエージェント「Muse Code」をベータ公開",
