@@ -49,7 +49,7 @@
     -webkit-text-size-adjust: 100%;
   }
   button { font: inherit; }
-  main, #app-header {
+  main {
     max-width: 640px;
     margin: 0 auto;
   }
@@ -66,17 +66,6 @@
     margin: 0;
     letter-spacing: 0.02em;
     text-align: center;
-  }
-  #settingsBtn {
-    position: absolute;
-    right: 0;
-    top: -4px;
-    background: none;
-    border: none;
-    font-size: 1.3rem;
-    color: var(--sub);
-    cursor: pointer;
-    padding: 6px;
   }
   #favoritesBtn {
     position: absolute;
@@ -176,7 +165,6 @@
     color: var(--accent);
     text-decoration: none;
     font-size: 0.85rem;
-    margin-right: auto;
   }
   .actions-row a.source-link:hover { text-decoration: underline; }
   .action-btn {
@@ -186,9 +174,10 @@
     font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;
+    background: var(--bg);
+    color: var(--fg);
+    border: 1px solid var(--border);
   }
-  .action-btn.primary { background: var(--accent); color: var(--accent-fg); }
-  .action-btn.secondary { background: var(--bg); color: var(--fg); border: 1px solid var(--border); }
   footer.page-footer {
     max-width: 640px;
     margin: 40px auto 0;
@@ -201,77 +190,12 @@
     color: var(--sub);
     padding: 60px 20px;
   }
-
-  /* overlay / bottom sheet (設定パネルで使用) */
-  .overlay {
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: var(--vv-top, 0px);
-    height: var(--vv-height, 100vh);
-    background: rgba(0,0,0,0.4);
-    display: flex;
-    align-items: flex-end;
-    z-index: 50;
-  }
-  .overlay.hidden { display: none; }
-  .sheet {
-    background: var(--bg);
-    width: 100%;
-    max-width: 640px;
-    margin: 0 auto;
-    border-radius: 16px 16px 0 0;
-    max-height: calc(var(--vv-height, 100vh) * 0.88);
-    display: flex;
-    flex-direction: column;
-    padding-bottom: env(safe-area-inset-bottom);
-    box-shadow: 0 -4px 24px rgba(0,0,0,0.25);
-  }
-  .sheet-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--border);
-  }
-  .sheet-title { font-weight: 700; font-size: 1rem; padding-right: 12px; }
-  .sheet-header button.close {
-    background: none;
-    border: none;
-    color: var(--sub);
-    font-size: 1.2rem;
-    cursor: pointer;
-    flex-shrink: 0;
-  }
-
-  /* settings */
-  .settings-body { padding: 16px; display: flex; flex-direction: column; gap: 14px; }
-  .settings-body label { display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem; color: var(--sub); }
-  .settings-body input {
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background: var(--card-bg);
-    color: var(--fg);
-    padding: 10px 12px;
-    font-size: 0.95rem;
-  }
-  .settings-body .save-btn {
-    background: var(--accent);
-    color: var(--accent-fg);
-    border: none;
-    border-radius: 10px;
-    padding: 12px;
-    font-weight: 700;
-    cursor: pointer;
-  }
-  .settings-note { font-size: 0.78rem; color: var(--sub); line-height: 1.6; }
 </style>
 </head>
 <body>
 <header class="top">
   <button id="favoritesBtn" aria-label="お気に入り一覧">★</button>
   <h1>AIニュースBrief</h1>
-  <button id="settingsBtn" aria-label="設定">⚙️</button>
 </header>
 
 <div class="datebar" id="datebar">
@@ -285,28 +209,6 @@
 </main>
 
 <footer class="page-footer">AIニュースBrief — araiさん専属ダイジェスト</footer>
-
-<!-- 設定シート -->
-<div id="settingsOverlay" class="overlay hidden">
-  <div class="sheet">
-    <div class="sheet-header">
-      <div class="sheet-title">設定</div>
-      <button class="close" id="settingsClose" aria-label="閉じる">✕</button>
-    </div>
-    <div class="settings-body">
-      <label>Obsidian Vault名
-        <input id="cfgVault" placeholder="例: Obsidian" autocapitalize="off" autocorrect="off" spellcheck="false">
-      </label>
-      <label>保存先フォルダ（Vault内のパス）
-        <input id="cfgFolder" placeholder="99_情報ソース/AIニュースBrief" autocapitalize="off" autocorrect="off" spellcheck="false">
-      </label>
-      <button class="save-btn" id="settingsSave">保存</button>
-      <div class="settings-note">
-        Vault名はObsidianアプリに表示されている名前と一致させてください。設定はこの端末のブラウザにのみ保存されます。
-      </div>
-    </div>
-  </div>
-</div>
 
 <script>
 (function () {
@@ -327,25 +229,6 @@
   var prevDayBtn = document.getElementById('prevDay');
   var nextDayBtn = document.getElementById('nextDay');
 
-  // iOSのソフトウェアキーボード表示時、position:fixedの要素がキーボードの下に
-  // 隠れて入力欄が届かなくなる問題への対策。visualViewportの高さ・オフセットを
-  // CSSカスタムプロパティに反映し、オーバーレイの高さをそれに追従させる。
-  function syncViewportVars() {
-    var vv = window.visualViewport;
-    var height = vv ? vv.height : window.innerHeight;
-    var top = vv ? vv.offsetTop : 0;
-    document.documentElement.style.setProperty('--vv-height', height + 'px');
-    document.documentElement.style.setProperty('--vv-top', top + 'px');
-  }
-  syncViewportVars();
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', syncViewportVars);
-    window.visualViewport.addEventListener('scroll', syncViewportVars);
-  }
-  window.addEventListener('orientationchange', function () {
-    setTimeout(syncViewportVars, 250);
-  });
-
   function escapeHtml(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
@@ -356,67 +239,6 @@
     var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d);
     if (!m) return d;
     return m[1] + '年' + parseInt(m[2], 10) + '月' + parseInt(m[3], 10) + '日';
-  }
-
-  // ---------- settings ----------
-  var SETTINGS_KEY = 'ainewsbrief.settings.v1';
-  var DEFAULT_FOLDER = '99_情報ソース/AIニュースBrief';
-
-  function loadSettings() {
-    try {
-      return JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {};
-    } catch (e) { return {}; }
-  }
-  function saveSettings(s) {
-    localStorage.setItem(SETTINGS_KEY, JSON.stringify(s));
-  }
-
-  var settingsOverlay = document.getElementById('settingsOverlay');
-  document.getElementById('settingsBtn').addEventListener('click', openSettings);
-  document.getElementById('settingsClose').addEventListener('click', closeSettings);
-  settingsOverlay.addEventListener('click', function (e) { if (e.target === settingsOverlay) closeSettings(); });
-  document.getElementById('settingsSave').addEventListener('click', function () {
-    var s = {
-      vault: document.getElementById('cfgVault').value.trim(),
-      folder: document.getElementById('cfgFolder').value.trim()
-    };
-    saveSettings(s);
-    closeSettings();
-  });
-
-  function openSettings() {
-    var s = loadSettings();
-    document.getElementById('cfgVault').value = s.vault || '';
-    document.getElementById('cfgFolder').value = s.folder || DEFAULT_FOLDER;
-    settingsOverlay.classList.remove('hidden');
-  }
-  function closeSettings() { settingsOverlay.classList.add('hidden'); }
-
-  // ---------- 「AIに聞いてみる」: ニュースの文脈を持たせてSafariの別タブでClaudeを開く ----------
-  function buildClaudePrompt(article) {
-    var lines = [];
-    lines.push('次のニュース記事について教えてください。');
-    lines.push('');
-    lines.push('見出し: ' + article.headline);
-    if (article.summary) lines.push('要約: ' + article.summary);
-    if (article.detail) lines.push('詳細: ' + article.detail);
-    if (article.sourceUrl) lines.push('出典: ' + article.sourceUrl);
-    return lines.join('\n');
-  }
-
-  function askClaude(article) {
-    var prompt = buildClaudePrompt(article);
-    // URLでの引き渡しが効かない場合に備えて、クリップボードにもコピーしておく
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(prompt).catch(function () {});
-    }
-    var claudeUrl = 'https://claude.ai/new?q=' + encodeURIComponent(prompt);
-    // claude.aiへ直接遷移するとiOSのUniversal LinksでClaudeアプリに
-    // 自動的に持っていかれることがあるため、一度自ドメイン(Worker)を
-    // 経由してから302でclaude.aiへリダイレクトする。
-    var bounceUrl = WORKER_BASE + '/goto?u=' + encodeURIComponent(claudeUrl);
-    // Safariの新しいタブで開く（別アプリ(Chrome)は使わない）
-    window.open(bounceUrl, '_blank');
   }
 
   // ---------- お気に入り ----------
@@ -463,45 +285,6 @@
     }).catch(function (e) { console.warn('favorite sync failed', e); });
   }
 
-  // ---------- Obsidianに保存 ----------
-  function sanitizeFilename(s) {
-    return String(s).replace(/[\\/:*?"<>|#^\[\]]/g, '').trim().slice(0, 60);
-  }
-
-  function saveArticleToObsidian(article) {
-    var s = loadSettings();
-    if (!s.vault) { alert('先に設定でObsidianのVault名を入力してください。'); openSettings(); return; }
-
-    var folder = (s.folder || DEFAULT_FOLDER).replace(/\/+$/, '');
-    var filename = folder + '/' + state.currentDate + '_' + sanitizeFilename(article.headline) + '.md';
-
-    var lines = [];
-    lines.push('---');
-    lines.push('created: ' + state.currentDate);
-    lines.push('tags:');
-    lines.push(' - AIニュースBrief');
-    lines.push('---');
-    lines.push('');
-    lines.push('# ' + article.headline);
-    lines.push('');
-    if (article.summary) { lines.push('> ' + article.summary); lines.push(''); }
-    if (article.detail) { lines.push(article.detail); lines.push(''); }
-    if (article.sourceUrl) {
-      lines.push('出典: [' + (article.sourceLabel || 'リンク') + '](' + article.sourceUrl + ')');
-      lines.push('');
-    }
-    lines.push('## Claudeとの会話');
-    lines.push('');
-    lines.push('（Chromeで開いたClaudeとの会話をここに貼り付けてください）');
-    lines.push('');
-    var content = lines.join('\n');
-
-    var uri = 'obsidian://new?vault=' + encodeURIComponent(s.vault) +
-      '&file=' + encodeURIComponent(filename) +
-      '&content=' + encodeURIComponent(content);
-    window.location.href = uri;
-  }
-
   // ---------- rendering ----------
   function renderArticle(a, category) {
     var det = document.createElement('details');
@@ -526,21 +309,10 @@
     html += '<div class="actions-row">';
     if (a.sourceUrl) {
       html += '<a class="source-link" href="' + escapeHtml(a.sourceUrl) + '" target="_blank" rel="noopener">出典: ' + escapeHtml(a.sourceLabel || 'リンク') + '</a>';
-    } else {
-      html += '<span class="source-link"></span>';
     }
-    html += '<button class="action-btn primary" data-action="ask">🤖 AIに聞いてみる</button>';
-    html += '<button class="action-btn secondary" data-action="save">📓 Obsidianに保存</button>';
     html += '</div>';
     body.innerHTML = html;
     det.appendChild(body);
-
-    body.querySelector('[data-action="ask"]').addEventListener('click', function () {
-      askClaude(a);
-    });
-    body.querySelector('[data-action="save"]').addEventListener('click', function () {
-      saveArticleToObsidian(a);
-    });
 
     return det;
   }
@@ -609,7 +381,7 @@
       } else {
         html += '<span class="source-link"></span>';
       }
-      html += '<button type="button" class="action-btn secondary" data-remove="1">♥ 解除</button>';
+      html += '<button type="button" class="action-btn" data-remove="1">♥ 解除</button>';
       html += '</div>';
       card.innerHTML = html;
       card.querySelector('[data-remove]').addEventListener('click', function () {

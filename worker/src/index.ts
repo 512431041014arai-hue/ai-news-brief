@@ -134,20 +134,6 @@ async function handleFavorite(request: Request, env: Env, cors: Record<string, s
   return json({ ok: true, count: next.length }, 200, cors);
 }
 
-// Anthropic/Claudeのアプリへの自動遷移(Universal Links)をできるだけ避けるため、
-// 一度自ドメインを経由してから302でclaude.aiへリダイレクトする。
-async function handleGoto(request: Request, cors: Record<string, string>): Promise<Response> {
-  const url = new URL(request.url);
-  const target = url.searchParams.get("u");
-  if (!target || !/^https:\/\/claude\.ai\//.test(target)) {
-    return json({ error: "invalid target" }, 400, cors);
-  }
-  return new Response(null, {
-    status: 302,
-    headers: { Location: target, ...cors }
-  });
-}
-
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const cors = corsHeaders(env);
@@ -160,9 +146,6 @@ export default {
     try {
       if (url.pathname === "/api/favorite" && request.method === "POST") {
         return await handleFavorite(request, env, cors);
-      }
-      if (url.pathname === "/goto" && request.method === "GET") {
-        return await handleGoto(request, cors);
       }
       return json({ error: "not found" }, 404, cors);
     } catch (err: any) {
