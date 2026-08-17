@@ -13,6 +13,7 @@ interface FavoriteItem {
   category?: string;
   sourceLabel?: string;
   sourceUrl?: string;
+  note?: string;
   favoritedAt: string;
 }
 
@@ -100,7 +101,9 @@ async function handleFavorite(request: Request, env: Env, cors: Record<string, s
     return json({ error: "invalid json" }, 400, cors);
   }
 
-  const action: string = body?.action === "remove" ? "remove" : "add";
+  const requested: string = body?.action;
+  const action: string =
+    requested === "remove" ? "remove" : requested === "note" ? "note" : "add";
   const articleId: string = body?.articleId;
   const date: string = body?.date;
   if (!articleId || !date) {
@@ -110,28 +113,55 @@ async function handleFavorite(request: Request, env: Env, cors: Record<string, s
     return json({ error: "GITHUB_TOKEN is not configured on the worker" }, 500, cors);
   }
 
-  const { items, sha } = await readFavorites(env);
-  const next = items.filter((it) => it.articleId !== articleId);
+  // お気に入りのトグルとメモ保存が近いタイミングで重なると、GitHubのsha不一致で
+  // 409が返る。その場合は最新のファイルを読み直して数回だけやり直す。
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const { items, sha } = await readFavorites(env);
+    const existing = items.find((it) => it.articleId === articleId);
+    const next = items.filter((it) => it.articleId !== articleId);
 
-  if (action === "add") {
-    next.unshift({
-      date,
-      articleId,
-      headline: body?.headline,
-      summary: body?.summary,
-      category: body?.category,
-      sourceLabel: body?.sourceLabel,
-      sourceUrl: body?.sourceUrl,
-      favoritedAt: new Date().toISOString()
-    });
+    if (action === "note") {
+      const note: string = typeof body?.note === "string" ? body.note : "";
+      const base: FavoriteItem = existing || {
+        date,
+        articleId,
+        headline: body?.headline,
+        summary: body?.summary,
+        category: body?.category,
+        sourceLabel: body?.sourceLabel,
+        sourceUrl: body?.sourceUrl,
+        favoritedAt: new Date().toISOString()
+      };
+      const idx = items.findIndex((it) => it.articleId === articleId);
+      const updated = { ...base, note };
+      if (idx >= 0) next.splice(idx, 0, updated);
+      else next.unshift(updated);
+    } else if (action === "add") {
+      next.unshift({
+        date,
+        articleId,
+        headline: body?.headline,
+        summary: body?.summary,
+        category: body?.category,
+        sourceLabel: body?.sourceLabel,
+        sourceUrl: body?.sourceUrl,
+        // 一度お気に入りを外して再登録した場合でも、以前書いたメモは残す
+        note: existing?.note,
+        favoritedAt: new Date().toISOString()
+      });
+    }
+
+    const putRes = await writeFavorites(env, next, sha);
+    if (putRes.ok) {
+      return json({ ok: true, count: next.length }, 200, cors);
+    }
+    if (putRes.status !== 409) {
+      const detail = await putRes.text();
+      return json({ error: "github commit failed", detail }, 502, cors);
+    }
   }
 
-  const putRes = await writeFavorites(env, next, sha);
-  if (!putRes.ok) {
-    const detail = await putRes.text();
-    return json({ error: "github commit failed", detail }, 502, cors);
-  }
-  return json({ ok: true, count: next.length }, 200, cors);
+  return json({ error: "github commit conflicted, please retry" }, 409, cors);
 }
 
 export default {

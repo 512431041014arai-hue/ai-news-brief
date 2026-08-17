@@ -190,6 +190,64 @@
     color: var(--sub);
     padding: 60px 20px;
   }
+
+  /* お気に入り: 検索 */
+  .fav-search {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .fav-search input {
+    flex: 1;
+    min-width: 0;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--fg);
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    font-family: inherit;
+  }
+  .fav-count {
+    font-size: 0.8rem;
+    color: var(--sub);
+    white-space: nowrap;
+  }
+
+  /* お気に入り: メモ */
+  .note-wrap { margin-top: 10px; }
+  .note-label {
+    font-size: 0.78rem;
+    color: var(--sub);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .note-input {
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--fg);
+    padding: 9px 11px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    line-height: 1.7;
+    resize: vertical;
+    min-height: 42px;
+  }
+  .note-status {
+    font-size: 0.75rem;
+    color: var(--sub);
+    margin-top: 4px;
+    min-height: 1.2em;
+  }
+  mark {
+    background: var(--accent);
+    color: var(--accent-fg);
+    border-radius: 3px;
+    padding: 0 2px;
+  }
 </style>
 </head>
 <body>
@@ -221,6 +279,8 @@
     currentDate: null,
     data: null,
     favorites: {},
+    favItems: [],
+    favQuery: '',
     view: 'daily'
   };
 
@@ -334,6 +394,8 @@
   }
 
   // ---------- お気に入り一覧ビュー ----------
+  var FAVORITES_RETENTION_DAYS = 365;
+
   function renderFavoritesView() {
     contentEl.innerHTML = '<div class="empty-state">読み込み中…</div>';
     fetch('data/favorites.json?t=' + Date.now(), { cache: 'no-store' })
@@ -343,25 +405,51 @@
       })
       .then(function (data) {
         var items = Array.isArray(data.favorites) ? data.favorites : [];
-        var cutoff = Date.now() - 30 * 24 * 60 * 60 * 1000;
-        items = items.filter(function (it) {
+        var cutoff = Date.now() - FAVORITES_RETENTION_DAYS * 24 * 60 * 60 * 1000;
+        state.favItems = items.filter(function (it) {
           var t = Date.parse(it.favoritedAt || it.date);
           return isNaN(t) ? true : t >= cutoff;
         });
-        renderFavoritesList(items);
+        buildFavoritesUI();
       })
       .catch(function (err) {
         contentEl.innerHTML = '<div class="empty-state">お気に入りを読み込めませんでした。<br>(' + escapeHtml(err.message) + ')</div>';
       });
   }
 
-  function renderFavoritesList(items) {
+  function escapeRegExp(s) {
+    return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  function searchTerms() {
+    return (state.favQuery || '').trim().split(/[\s　]+/).filter(Boolean);
+  }
+
+  function matchesQuery(it, terms) {
+    if (!terms.length) return true;
+    var haystack = [it.headline, it.summary, it.note, it.category, it.sourceLabel]
+      .filter(Boolean).join(' ').toLowerCase();
+    return terms.every(function (t) { return haystack.indexOf(t.toLowerCase()) !== -1; });
+  }
+
+  function highlight(text, terms) {
+    var out = escapeHtml(text || '');
+    terms.forEach(function (t) {
+      out = out.replace(new RegExp(escapeRegExp(escapeHtml(t)), 'gi'), function (m) {
+        return '<mark>' + m + '</mark>';
+      });
+    });
+    return out;
+  }
+
+  function buildFavoritesUI() {
     contentEl.innerHTML = '';
+
     var h2 = document.createElement('h2');
-    h2.textContent = '★ お気に入り（直近30日）';
+    h2.textContent = '★ お気に入り（直近1年）';
     contentEl.appendChild(h2);
 
-    if (!items.length) {
+    if (!state.favItems.length) {
       var empty = document.createElement('div');
       empty.className = 'empty-state';
       empty.textContent = 'お気に入りはまだありません。記事の♡をタップして追加できます。';
@@ -369,32 +457,142 @@
       return;
     }
 
-    items.forEach(function (it) {
-      var card = document.createElement('div');
-      card.className = 'card fav-card';
-      var html = '<div class="fav-meta">' + escapeHtml(formatDateJp(it.date)) + (it.category ? ' ・ ' + escapeHtml(it.category) : '') + '</div>';
-      html += '<div class="fav-headline">' + escapeHtml(it.headline || '') + '</div>';
-      if (it.summary) html += '<p class="fav-summary">' + escapeHtml(it.summary) + '</p>';
-      html += '<div class="actions-row">';
-      if (it.sourceUrl) {
-        html += '<a class="source-link" href="' + escapeHtml(it.sourceUrl) + '" target="_blank" rel="noopener">出典: ' + escapeHtml(it.sourceLabel || 'リンク') + '</a>';
-      } else {
-        html += '<span class="source-link"></span>';
-      }
-      html += '<button type="button" class="action-btn" data-remove="1">♥ 解除</button>';
-      html += '</div>';
-      card.innerHTML = html;
-      card.querySelector('[data-remove]').addEventListener('click', function () {
-        toggleFavorite(
-          { id: it.articleId, headline: it.headline, summary: it.summary, sourceLabel: it.sourceLabel, sourceUrl: it.sourceUrl },
-          it.category,
-          it.date,
-          null
-        );
-        card.remove();
-      });
-      contentEl.appendChild(card);
+    var searchBar = document.createElement('div');
+    searchBar.className = 'fav-search';
+    searchBar.innerHTML =
+      '<input type="search" id="favSearch" placeholder="見出し・要約・メモから検索" ' +
+      'autocapitalize="off" autocorrect="off" spellcheck="false">' +
+      '<span class="fav-count" id="favCount"></span>';
+    contentEl.appendChild(searchBar);
+
+    var listEl = document.createElement('div');
+    contentEl.appendChild(listEl);
+
+    var input = searchBar.querySelector('#favSearch');
+    input.value = state.favQuery || '';
+    input.addEventListener('input', function () {
+      state.favQuery = input.value;
+      renderFavoritesList(listEl);
     });
+
+    renderFavoritesList(listEl);
+  }
+
+  function renderFavoritesList(listEl) {
+    var terms = searchTerms();
+    var items = state.favItems.filter(function (it) { return matchesQuery(it, terms); });
+
+    var countEl = document.getElementById('favCount');
+    if (countEl) {
+      countEl.textContent = terms.length
+        ? items.length + ' / ' + state.favItems.length + '件'
+        : state.favItems.length + '件';
+    }
+
+    listEl.innerHTML = '';
+    if (!items.length) {
+      var empty = document.createElement('div');
+      empty.className = 'empty-state';
+      empty.textContent = '該当するお気に入りはありません。';
+      listEl.appendChild(empty);
+      return;
+    }
+
+    items.forEach(function (it) {
+      listEl.appendChild(renderFavoriteCard(it, terms));
+    });
+  }
+
+  function renderFavoriteCard(it, terms) {
+    var card = document.createElement('div');
+    card.className = 'card fav-card';
+
+    var html = '<div class="fav-meta">' + escapeHtml(formatDateJp(it.date)) +
+      (it.category ? ' ・ ' + escapeHtml(it.category) : '') + '</div>';
+    html += '<div class="fav-headline">' + highlight(it.headline, terms) + '</div>';
+    if (it.summary) html += '<p class="fav-summary">' + highlight(it.summary, terms) + '</p>';
+
+    html += '<div class="note-wrap">';
+    html += '<label class="note-label">メモ</label>';
+    html += '<textarea class="note-input" rows="2" placeholder="調べたこと・気づきをメモ">' +
+      escapeHtml(it.note || '') + '</textarea>';
+    html += '<div class="note-status"></div>';
+    html += '</div>';
+
+    html += '<div class="actions-row">';
+    if (it.sourceUrl) {
+      html += '<a class="source-link" href="' + escapeHtml(it.sourceUrl) +
+        '" target="_blank" rel="noopener">出典: ' + escapeHtml(it.sourceLabel || 'リンク') + '</a>';
+    } else {
+      html += '<span class="source-link"></span>';
+    }
+    html += '<button type="button" class="action-btn" data-remove="1">♥ 解除</button>';
+    html += '</div>';
+    card.innerHTML = html;
+
+    var noteInput = card.querySelector('.note-input');
+    var noteStatus = card.querySelector('.note-status');
+    var saveTimer = null;
+    var isComposing = false;
+
+    function scheduleSave() {
+      if (isComposing) return;
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(function () { saveNote(it, noteInput.value, noteStatus); }, 900);
+    }
+    noteInput.addEventListener('compositionstart', function () { isComposing = true; });
+    noteInput.addEventListener('compositionend', function () { isComposing = false; scheduleSave(); });
+    noteInput.addEventListener('input', scheduleSave);
+    noteInput.addEventListener('blur', function () {
+      clearTimeout(saveTimer);
+      if (noteInput.value !== (it.note || '')) saveNote(it, noteInput.value, noteStatus);
+    });
+
+    card.querySelector('[data-remove]').addEventListener('click', function () {
+      toggleFavorite(
+        { id: it.articleId, headline: it.headline, summary: it.summary, sourceLabel: it.sourceLabel, sourceUrl: it.sourceUrl },
+        it.category,
+        it.date,
+        null
+      );
+      state.favItems = state.favItems.filter(function (x) { return x.articleId !== it.articleId; });
+      card.remove();
+      var countEl = document.getElementById('favCount');
+      if (countEl) countEl.textContent = state.favItems.length + '件';
+    });
+
+    return card;
+  }
+
+  function saveNote(it, note, statusEl) {
+    if (note === (it.note || '')) return;
+    it.note = note;
+    if (state.favorites[it.articleId]) state.favorites[it.articleId].note = note;
+    statusEl.textContent = '保存中…';
+
+    fetch(WORKER_BASE + '/api/favorite', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'note',
+        date: it.date,
+        articleId: it.articleId,
+        note: note,
+        headline: it.headline,
+        summary: it.summary,
+        category: it.category,
+        sourceLabel: it.sourceLabel,
+        sourceUrl: it.sourceUrl
+      })
+    })
+      .then(function (res) {
+        if (!res.ok) throw new Error('status ' + res.status);
+        statusEl.textContent = '保存しました';
+        setTimeout(function () { statusEl.textContent = ''; }, 2000);
+      })
+      .catch(function () {
+        statusEl.textContent = '保存できませんでした（通信状況を確認してください）';
+      });
   }
 
   // ---------- date navigation ----------
