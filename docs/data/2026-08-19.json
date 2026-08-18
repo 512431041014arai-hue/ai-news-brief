@@ -1,0 +1,290 @@
+{
+  "date": "2026-08-19",
+  "sections": [
+    {
+      "title": "AI業界・技術関連",
+      "articles": [
+        {
+          "id": "2026-08-19-ai-1",
+          "star": true,
+          "headline": "OpenAI、次期モデル「Astra」の強化学習を一部停止",
+          "summary": "エージェント的コーディング・サイバー能力が社内最高リスク水準「Critical」に該当する可能性が示されたため、開発中のRLを一時停止。",
+          "detail": "8月18日発表。人間の介在なしに未知の脆弱性を特定し攻撃コードを自律開発・実行できる水準に達した可能性があるとして、開発予定の強化学習を約2週間停止し、その間に研究環境の強化・セキュリティテスト・監視体制の拡大を実施。7月に起きたHugging Face侵害事件（AIエージェントによる不正侵入）も対応強化の背景とされる。フロンティアモデル企業が自社モデルの最高リスク該当を公表したのは初とされる。",
+          "sourceLabel": "ITmedia",
+          "sourceUrl": "https://www.itmedia.co.jp/news/article/2608/19/2000000605/"
+        },
+        {
+          "id": "2026-08-19-ai-2",
+          "star": true,
+          "headline": "NVIDIA、OpenAIのオハイオAIデータセンターに最大1050億ドルの債務保証",
+          "summary": "ソフトバンクG傘下SB Energyが建設するAIデータセンターをOpenAIが20年間賃借。NVIDIAが残余価値保証を提供し、SB Energyにも出資。",
+          "detail": "8月17日発表。オハイオ州で建設中の「PORTS-Pike Technology Campus」（初期4.25GW、拡張余地3.75GW）をOpenAIが20年契約で賃借する取り決め。NVIDIAはOpenAIが支払い不能になった場合に備える残余価値保証として最大1050億ドルを負担するほか、SB Energyへ15億ドルを出資する。NVIDIA製の「DSX AI工場」プラットフォームが採用され、2028年から段階稼働の予定。",
+          "sourceLabel": "ITmedia/日本経済新聞",
+          "sourceUrl": "https://www.itmedia.co.jp/news/article/2608/18/2000000572/"
+        },
+        {
+          "id": "2026-08-19-ai-3",
+          "star": false,
+          "headline": "OpenAI、「ChatGPT for Teens」を発表",
+          "summary": "宿題の丸投げ検知や、自傷・摂食障害の兆候がある未成年ユーザーへの保護機能を強化した専用版。",
+          "detail": "8月19日発表。未成年向けに最適化した版で、宿題の“丸投げ”利用を検知する仕組みのほか、自傷行為や摂食障害などのリスクサインを検知した際の保護対応を強化した。",
+          "sourceLabel": "ITmedia",
+          "sourceUrl": "https://www.itmedia.co.jp/news/article/2608/19/2000000606/"
+        },
+        {
+          "id": "2026-08-19-ai-4",
+          "star": false,
+          "headline": "Cursor、コードホスティング機能「Origin」の初期βを提供開始",
+          "summary": "GitHubとの双方向同期に対応。",
+          "detail": "8月18日発表。AIコーディングツール「Cursor」が自前のコードホスティング機能「Origin」の初期ベータ版を公開し、GitHubリポジトリとの双方向同期に対応した。",
+          "sourceLabel": "ITmedia",
+          "sourceUrl": "https://www.itmedia.co.jp/aiplus/article/2608/18/2000000575/"
+        },
+        {
+          "id": "2026-08-19-ai-5",
+          "star": false,
+          "headline": "OpenAIのAI、競技プログラミングで人間を圧倒",
+          "summary": "想定を超えたAIの「勝ち方」が話題に。",
+          "detail": "8月18日報道。競技プログラミングの大会でOpenAIのAIが人間の上位競技者を大きく上回る成績を収め、想定を超えたアプローチでの「勝ち方」が注目された。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOUC293LL0Z20C26A7000000/"
+        },
+        {
+          "id": "2026-08-19-ai-6",
+          "star": false,
+          "headline": "中国Unitree、新型ヒューマノイドを公開",
+          "summary": "助走なしで高さ2mのジャンプ、時速45kmでの走行が可能。",
+          "detail": "8月17日発表。中国のロボット新興Unitreeが開発中の新型ヒューマノイドロボットを公開し、助走なしで高さ2mのジャンプや時速45kmでの走行など、人間の運動能力を超える性能を示した。",
+          "sourceLabel": "ITmedia",
+          "sourceUrl": "https://www.itmedia.co.jp/aiplus/article/2608/17/2000000567/"
+        },
+        {
+          "id": "2026-08-19-ai-7",
+          "star": false,
+          "headline": "中国ロボット新興ユニツリー、19日上場",
+          "summary": "調達資金でAIの「大脳」強化へ投資する方針。",
+          "detail": "Unitreeが8月19日に上場。上場で得た調達資金を、ロボットの認識・判断を担うAI（「大脳」）の開発強化に充てる方針が報じられた。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOGM1701L0X10C26A8000000/"
+        },
+        {
+          "id": "2026-08-19-ai-8",
+          "star": false,
+          "headline": "マネーフォワード、ChatGPT・Claudeの利用量とコストを一元管理する無料サービスを提供開始",
+          "summary": "法人向け新サービス。",
+          "detail": "8月18日発表。企業がChatGPTやClaudeなど複数の生成AIサービスの利用量・コストを一元管理できる無料の法人向けサービスをマネーフォワードが提供開始した。",
+          "sourceLabel": "ITmedia",
+          "sourceUrl": "https://www.itmedia.co.jp/aiplus/article/2608/18/2000000571/"
+        },
+        {
+          "id": "2026-08-19-ai-9",
+          "star": false,
+          "headline": "秋田のAIデータセンター建設、洋上風力発電が電力供給の要に",
+          "summary": "JERA連合が工事着手。",
+          "detail": "8月19日報道。秋田県で計画されているAIデータセンターの電力供給源として洋上風力発電が位置付けられており、JERA連合が建設工事に着手した。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOCC071RC0X00C26A8000000/"
+        },
+        {
+          "id": "2026-08-19-ai-10",
+          "star": false,
+          "headline": "中国発オープンAI「Kimi」「DeepSeek」、米国モデルと互角の攻勢",
+          "summary": "群雄割拠となる中国AI勢力図の行方を分析。",
+          "detail": "8月18日報道。オープンウェイト型モデルを展開する中国の「Kimi」「DeepSeek」などが米国モデルと互角の性能を示し、中国AI企業間の覇権争いが激しさを増しているとの分析記事。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOCD146300U6A810C2000000/"
+        }
+      ]
+    },
+    {
+      "title": "日本経済関連",
+      "articles": [
+        {
+          "id": "2026-08-19-econ-1",
+          "star": true,
+          "headline": "日銀利上げ、切り上がる政策金利「到達点」",
+          "summary": "市場では9〜10月までの利上げが有力視され、関心は時期からペースへ移行。年内あと2回の利上げ観測も。",
+          "detail": "8月18日報道。国内債券市場では日銀の政策金利の最終到達点（ターミナルレート）の水準見通しが切り上がっている。市場の関心は利上げの実施時期からその後のペースへ移りつつあり、年内あと2回の利上げを見込む向きもある。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOFL140RYTU6A810C2000000/"
+        },
+        {
+          "id": "2026-08-19-econ-2",
+          "star": true,
+          "headline": "AIインフラ構築に潜む「隠れ債務」",
+          "summary": "ハイパースケーラー各社がAI投資向けに大規模な社債発行に動き、信用市場に潜在リスクを蓄積させているとの分析。",
+          "detail": "8月19日報道。データセンターなどAIインフラ投資の資金を賄うため、米大手テック（ハイパースケーラー）が相次いで大規模な社債発行に動いている。バランスシートに表れにくい形での債務拡大が信用市場のリスクとして蓄積しているとの指摘。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOFL18ANP0Y6A810C2000000/"
+        },
+        {
+          "id": "2026-08-19-econ-3",
+          "star": false,
+          "headline": "長期金利、一時2.945%に上昇",
+          "summary": "8月18日、30年ぶりの高水準。",
+          "detail": "8月18日、日本の長期金利（新発10年物国債利回り）が一時2.945%まで上昇し、約30年ぶりの高水準を記録した。日銀の利上げ観測の強まりが背景。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081800184&g=eco"
+        },
+        {
+          "id": "2026-08-19-econ-4",
+          "star": false,
+          "headline": "ソフトバンクGが個人向け社債1兆円を発行へ",
+          "summary": "過去最大規模、AI投資への原資に充てる方針。",
+          "detail": "8月18日報道。ソフトバンクグループが個人投資家向け社債として過去最大規模となる1兆円を発行する方針。調達資金はAI関連投資に充てられる見通し。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOUB0752I0X00C26A8000000/"
+        },
+        {
+          "id": "2026-08-19-econ-5",
+          "star": false,
+          "headline": "上場企業の4〜6月期、純利益率9.1%で過去最高",
+          "summary": "価格転嫁の浸透が寄与。",
+          "detail": "8月19日報道。上場企業の2026年4〜6月期決算集計で、純利益率が9.1%と過去最高を記録した。原材料高などのコスト増を販売価格に転嫁する動きが浸透したことが寄与したとされる。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOUB134RW0T10C26A8000000/"
+        },
+        {
+          "id": "2026-08-19-econ-6",
+          "star": false,
+          "headline": "主要企業の27年3月期、2割弱が業績を上方修正",
+          "summary": "AI半導体関連での強気見通しが目立つ。",
+          "detail": "8月18日報道。2027年3月期決算について、主要企業のうち約2割弱が業績予想を上方修正した。特にAI半導体関連事業での強気な見通しが目立つとされる。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOFL173M50X10C26A8000000/"
+        },
+        {
+          "id": "2026-08-19-econ-7",
+          "star": false,
+          "headline": "日経平均株価、1759円安で6万7460円73銭",
+          "summary": "8月18日、AI・半導体関連株の下落と金利上昇が重荷に。",
+          "detail": "8月18日の東京株式市場で日経平均株価が前日比1759円安の6万7460円73銭となった。AI・半導体関連銘柄の下落と長期金利の上昇が株価の重荷になったとされる。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081800670&g=eco"
+        },
+        {
+          "id": "2026-08-19-econ-8",
+          "star": false,
+          "headline": "NY株ハイライト、強気貫く投資家",
+          "summary": "米長期金利の「危険水準」は5%超かとの見方も。",
+          "detail": "8月19日報道。米長期金利の上昇が続く中でも米国株市場では強気な投資家心理が根強い一方、長期金利が5%を超えると「危険水準」に達するとの見方も出ている。",
+          "sourceLabel": "日本経済新聞",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOFL18AQK0Y6A810C2000000/"
+        },
+        {
+          "id": "2026-08-19-econ-9",
+          "star": false,
+          "headline": "円相場、159円台後半に下落",
+          "summary": "8月18日夕、ドル買い優勢。",
+          "detail": "8月18日午後5時時点の円相場は1ドル=159円72〜72銭。中東情勢の不透明感を背景にドル買いが優勢だった。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081800765&g=eco"
+        },
+        {
+          "id": "2026-08-19-econ-10",
+          "star": false,
+          "headline": "兵庫県、起債許可団体に移行",
+          "summary": "金利上昇による財政悪化が要因。",
+          "detail": "8月18日報道。兵庫県が地方債発行に国の許可が必要な「起債許可団体」に移行した。金利上昇に伴う財政状況の悪化が要因とされる。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081800669&g=eco"
+        }
+      ]
+    },
+    {
+      "title": "日本政治関連",
+      "articles": [
+        {
+          "id": "2026-08-19-pol-1",
+          "star": true,
+          "headline": "トランプ政権、ICC赤根智子所長らを制裁対象に",
+          "summary": "ルビオ国務長官が「権限を悪意をもって乱用」と主張し在米資産凍結・渡航禁止を決定。",
+          "detail": "8月18日発表。米国務省が国際刑事裁判所（ICC）の赤根智子所長らを制裁対象に指定し、在米資産の凍結と米国への渡航禁止を科した。ルビオ国務長官は声明でICCを「腐敗し政治化された超国家的な裁判所」と非難。ネタニヤフ首相への逮捕状発行や米兵の戦争犯罪捜査容認などを理由に、トランプ政権は7月からICC「解体」の方針を表明していた。",
+          "sourceLabel": "日本経済新聞/時事通信",
+          "sourceUrl": "https://www.nikkei.com/article/DGXZQOGN18AUH0Y6A810C2000000/"
+        },
+        {
+          "id": "2026-08-19-pol-2",
+          "star": false,
+          "headline": "ロシア外務省、北方領土訪問抗議を巡り日本大使を呼び出し",
+          "summary": "プーチン大統領の択捉島訪問への日本の抗議に対抗し、武藤駐ロシア大使が8月18日に出頭・抗議を受けた。",
+          "detail": "プーチン大統領の択捉島訪問（8月13日）に日本政府が抗議したことを受け、ロシア外務省は反発。ザハロワ情報局長の要請に応じ、武藤顕駐ロシア大使が8月18日にロシア外務省へ出頭し、抗議を受けた。日本大使館は「立場を適切に説明した」とコメント。",
+          "sourceLabel": "NHK",
+          "sourceUrl": "https://news.web.nhk/newsweb/na/nd-20260818de44873"
+        },
+        {
+          "id": "2026-08-19-pol-3",
+          "star": false,
+          "headline": "高市首相、熊本地震で知事らと会談",
+          "summary": "地元の要望を踏まえ「特別な財政支援」を約束。",
+          "detail": "8月18日、高市首相が熊本地震を受け熊本県知事らと会談し、復興に向けた特別な財政支援を約束した。県側は復興策の早期策定も要請した。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081800738&g=pol"
+        },
+        {
+          "id": "2026-08-19-pol-4",
+          "star": false,
+          "headline": "政府、AI事業者に学習データ開示を求める基本指針案を大筋了承",
+          "summary": "学習方法・データ種類の概要開示など3本柱、秋にも適用予定。",
+          "detail": "8月18日、有識者による「AI時代の知的財産権検討会」が生成AI事業者向けの知財保護に関する基本指針（プリンシプル・コード）案を提示し、大筋で了承された。①学習方法・データ種類の概要開示②権利者からの照会への回答③AI利用者からの照会への回答、の3本柱で構成され、法的強制力はないものの秋にも正式適用される見通し。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081800841&g=pol"
+        },
+        {
+          "id": "2026-08-19-pol-5",
+          "star": false,
+          "headline": "日豪防衛相会談、インド太平洋の抑止力向上へ連携強化",
+          "summary": "護衛艦輸出を含む装備協力の拡充で一致。",
+          "detail": "8月18日、日豪の防衛相会談が行われ、インド太平洋地域における抑止力向上へ向けた連携強化で一致した。護衛艦輸出を含む装備協力の拡充についても合意した。",
+          "sourceLabel": "NHK/時事通信",
+          "sourceUrl": "https://news.web.nhk/newsweb/na/nd-20260818de44825"
+        },
+        {
+          "id": "2026-08-19-pol-6",
+          "star": false,
+          "headline": "茂木外相、イエメン和平の重要性を訴え",
+          "summary": "8月19日、\"国家元首\"と会談。",
+          "detail": "8月19日、茂木外相がイエメン和平の重要性を訴え、関係する国家元首と会談した。",
+          "sourceLabel": "NHK",
+          "sourceUrl": "https://news.web.nhk/newsweb/na/nd-20260819de44918"
+        },
+        {
+          "id": "2026-08-19-pol-7",
+          "star": false,
+          "headline": "中道・小川代表、立民・公明との合流「責任持って結論出す」",
+          "summary": "8月18日発言。",
+          "detail": "中道（中道政党）の小川代表が、立憲民主党・公明党との合流を巡り「責任を持って結論を出す」と発言した。",
+          "sourceLabel": "NHK",
+          "sourceUrl": "https://news.web.nhk/newsweb/na/nd-20260818de44842"
+        },
+        {
+          "id": "2026-08-19-pol-8",
+          "star": false,
+          "headline": "国民・玉木代表、北方領土対応を巡り「高市政権は弱腰」と批判",
+          "summary": "8月18日。",
+          "detail": "国民民主党の玉木代表が、政府のロシア・北方領土問題への対応について「高市政権は弱腰」と批判した。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081800572&g=pol"
+        },
+        {
+          "id": "2026-08-19-pol-9",
+          "star": false,
+          "headline": "小泉防衛相、対北朝鮮の警戒強調",
+          "summary": "「日米韓連携が不可欠」と発言。",
+          "detail": "8月18日、小泉防衛相が北朝鮮情勢に対する警戒を強調し、対応には日米韓の連携が不可欠との認識を示した。",
+          "sourceLabel": "時事通信",
+          "sourceUrl": "https://www.jiji.com/jc/article?k=2026081800810&g=pol"
+        },
+        {
+          "id": "2026-08-19-pol-10",
+          "star": false,
+          "headline": "政府、在留外国人向けの日本語学習プログラム創設へ検討開始",
+          "summary": "8月18日報道。",
+          "detail": "8月18日、政府が日本で暮らす外国人向けの日本語学習プログラム創設に向けた検討を開始したと報じられた。",
+          "sourceLabel": "NHK",
+          "sourceUrl": "https://news.web.nhk/newsweb/na/nd-20260818de44804"
+        }
+      ]
+    }
+  ]
+}
