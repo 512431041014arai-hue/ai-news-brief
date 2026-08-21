@@ -3,9 +3,9 @@ main = "src/index.ts"
 compatibility_date = "2024-11-01"
 
 [vars]
-GITHUB_REPO = "512431041014arai-hue/ai-news-brief"
+GITHUB_REPO = "jisui-hack/ai-news-brief"
 GITHUB_BRANCH = "main"
-ALLOWED_ORIGIN = "https://512431041014arai-hue.github.io"
+ALLOWED_ORIGIN = "https://jisui-hack.github.io"
 
 # 実際のシークレットはコミットせず、以下のコマンドでユーザー自身の端末から登録する。
 #   wrangler secret put GITHUB_TOKEN

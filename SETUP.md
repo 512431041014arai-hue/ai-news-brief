@@ -1,5 +1,7 @@
 # セットアップ手順
 
+**公開URL**: https://jisui-hack.github.io/ai-news-brief/
+
 ## 現在の使い方（追加設定は不要）
 
 `docs/` はGitHub Pagesで公開される静的サイト。追加セットアップなしにそのまま使える。
@@ -27,3 +29,11 @@ Cloudflare Worker（`ai-news-brief-chat`）は現在、お気に入りの永続�
 cd worker
 npx wrangler deploy
 ```
+
+## GitHubアカウント名を変更したときにやること
+
+2026-08-21に、GitHubアカウント名を `512431041014arai-hue` から `jisui-hack` に変更した。リポジトリのURLは自動でリダイレクトされるが、**GitHub PagesのURLはリダイレクトされない**ため、旧URLは404になる。アカウント名を変えた場合は次の3点を必ず直す。
+
+1. **`worker/wrangler.toml` の `GITHUB_REPO` と `ALLOWED_ORIGIN`** を新しいアカウント名に更新して `npx wrangler deploy`。ここが古いままだと、CORSでブロックされてお気に入りの保存が失敗する。
+2. **スマホ側のURL** — ホーム画面のアイコンを削除して新URLから追加し直す。iOSショートカットのオートメーションのURLも書き換える。
+3. **Claude GitHub Appの再認可** — アカウント名変更後、毎朝のワークフローが `App token exchange failed: 401 Unauthorized - User does not have write access on this repository` で失敗する。https://github.com/settings/installations からClaudeのアプリを開き、このリポジトリへのアクセスを再設定する。
